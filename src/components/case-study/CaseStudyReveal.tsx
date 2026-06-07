@@ -6,6 +6,10 @@ import { useRef, type ReactNode } from "react";
 /** Matches kartikgoel.com/google-internship appear animation */
 const CASE_STUDY_EASE = [0.44, 0, 0.56, 1] as const;
 
+/** Shared full-width layout for case study sections */
+export const caseStudySectionClass =
+  "w-full self-stretch px-5 md:px-10 lg:px-14 xl:px-16";
+
 type CaseStudyRevealProps = {
   children: ReactNode;
   className?: string;

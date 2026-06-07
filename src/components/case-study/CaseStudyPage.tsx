@@ -8,7 +8,7 @@ import { CaseStudyHero } from "./CaseStudyHero";
 import { CaseStudyLearnings } from "./CaseStudyLearnings";
 import { CaseStudyMoreProjects } from "./CaseStudyMoreProjects";
 import { CaseStudyProcessFlow } from "./CaseStudyProcessFlow";
-import { CaseStudyReveal } from "./CaseStudyReveal";
+import { CaseStudyReveal, caseStudySectionClass } from "./CaseStudyReveal";
 import {
   CaseStudyChallenges,
   CaseStudyContentSection,
@@ -71,7 +71,9 @@ export function CaseStudyPage({ data, theme }: CaseStudyPageProps) {
           body={approach.body}
         />
 
-        <CaseStudyChallenges title={challenges.title} items={challenges.items} />
+        {challenges ? (
+          <CaseStudyChallenges title={challenges.title} items={challenges.items} />
+        ) : null}
 
         <CaseStudyFinalDesigns
           title={finalDesigns.title}
@@ -85,7 +87,7 @@ export function CaseStudyPage({ data, theme }: CaseStudyPageProps) {
 
         <CaseStudyLearnings title={impact.title} items={impact.learnings} />
 
-        <CaseStudyReveal className="pb-2">
+        <CaseStudyReveal className={`${caseStudySectionClass} pb-2`}>
           <p className="text-center font-display text-[26px] font-semibold text-[#1e1e2f]">
             Thank you for reading!
           </p>

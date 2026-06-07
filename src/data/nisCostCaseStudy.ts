@@ -4,46 +4,63 @@ export const nisCostCaseStudy = {
   slug: "nis-cost",
   hero: {
     id: "nis-hero",
+    layout: "split" as const,
+    eyebrow: "Case Study",
     lines: [
       { text: "NIS.Cost", color: "default" as const },
-      { text: "National Immunization", color: "default" as const },
-      { text: "Planning Platform", color: "default" as const },
+      { text: "National Immunization Planning Platform", color: "default" as const },
     ],
     subtitle:
-      "Designing a Data-Intensive Planning System for National Immunization Strategies — transforming a complex, spreadsheet-driven workflow into a scalable, structured web application used for country-level planning, costing, and funding decisions.",
+      "A digital platform to configure, plan and visualize immunization programs for multiple countries — enabling data-driven decision making and efficient resource allocation.",
     meta: [
-      { label: "Duration", value: "12 Months" },
-      { label: "Role", value: "Product Designer + BA" },
-      { label: "Platform", value: "Web Application" },
-      { label: "Domain", value: "Public Health (UNICEF)" },
+      { label: "Timeline", value: "12 Months", icon: "calendar" as const },
+      { label: "My Role", value: "Product Designer + BA", icon: "user" as const },
+      { label: "Platform", value: "Web Application", icon: "monitor" as const },
+      { label: "Domain", value: "Public Health (UNICEF)", icon: "globe" as const },
     ],
+    imageAlt: "NIS.Cost platform on laptop and mobile",
   },
-  overview: {
-    title: "Overview",
-    paragraphs: [
-      "NIS.Cost is a planning and costing platform that enables countries to create and manage their national immunization strategies.",
-      "Previously, this entire process was handled through large, interdependent spreadsheets. These sheets required manual aggregation of costs, complex formula tracking, repetitive data entry across sheets, and offered limited visibility into funding gaps and insights.",
-      "The goal was to design a system that could structure planning into a clear hierarchy, automate costing and financial calculations, enable real-time insights, reduce dependency on spreadsheets, and scale across countries with different planning needs.",
+  executiveSummary: {
+    sectionNumber: "1",
+    title: "Executive Summary",
+    cards: [
+      {
+        title: "Problem",
+        intro: "Spreadsheet-driven planning led to:",
+        items: [
+          "Manual aggregation of costs",
+          "Complex formula tracking",
+          "Repetitive data entry across sheets",
+          "Limited visibility into funding gaps",
+        ],
+        color: "#1976d2",
+        icon: "problem" as const,
+      },
+      {
+        title: "Solution",
+        intro: "A structured platform with:",
+        items: [
+          "Multi-level hierarchies",
+          "Automated costing engine",
+          "Funding allocation & tracking",
+          "Real-time reporting & insights",
+        ],
+        color: "#16a34a",
+        icon: "solution" as const,
+      },
+      {
+        title: "Outcome",
+        items: [
+          "Reduced spreadsheet dependency",
+          "Improved data consistency & accuracy",
+          "Scalable workflows for countries",
+          "Real-time insights for decisions",
+          "Collaboration across user roles",
+        ],
+        color: "#9333ea",
+        icon: "outcome" as const,
+      },
     ],
-    imageAlt: "NIS.Cost platform overview",
-    imageCaption: "NIS.Cost — national immunization planning platform",
-  },
-  problem: {
-    title: "Problem Statement",
-    paragraphs: [
-      "Design a system that replaces spreadsheet-based planning while supporting multi-level hierarchical structures, year-wise costing and financial calculations, allocation of funding from multiple sources, real-time aggregation and reporting, and diverse user roles across countries.",
-    ],
-    objectives: [
-      "Structure planning into a clear hierarchy",
-      "Automate costing and financial calculations",
-      "Enable real-time insights and reporting",
-      "Reduce dependency on interdependent spreadsheets",
-      "Support multi-level structures and year-wise projections",
-      "Allocate and track funding from multiple sources",
-      "Scale across countries with different planning needs",
-    ],
-    highlight:
-      "Core challenge: How do you create a system that retains the flexibility of Excel, but introduces the structure, accuracy, and scalability required for national-level decision-making?",
   },
   role: {
     title: "My Role & Ownership",
@@ -61,33 +78,86 @@ export const nisCostCaseStudy = {
       "Creating onboarding and walkthrough material",
     ],
   },
-  roleBasedDesign: {
-    title: "Role-Based System Design",
-    intro:
-      "The platform supports multiple roles with distinct permissions and responsibilities. Instead of generic personas, the system was designed around role-based workflows, ensuring each user type interacts only with relevant data and actions.",
-    roles: [
-      "Global Admin",
-      "Country Admin",
-      "Country Collaborator",
-      "Researcher (Personal workspace)",
-      "Country Viewer",
+  processNav: {
+    phases: [
+      { title: "Discover & Analyze", color: "#1976d2" },
+      { title: "Define Requirements", color: "#16a34a" },
+      { title: "Design & Prototype", color: "#9333ea" },
+      { title: "Build & Iterate", color: "#ea580c" },
+      { title: "Validate (UAT)", color: "#0891b2" },
+      { title: "Rollout & Enable", color: "#15803d" },
+    ],
+    anchors: [
+      { id: "process-discover", phase: 0 },
+      { id: "process-define", phase: 1 },
+      { id: "process-design", phase: 2 },
+      { id: "process-build", phase: 3 },
+      { id: "process-validate", phase: 4 },
+      { id: "process-rollout", phase: 5 },
     ],
   },
-  iterativeDevelopment: {
-    title: "Iterative Product Development",
-    paragraphs: [
-      "The product evolved continuously over a year through iterative development. Every module went through multiple iterations, requirements evolved frequently based on stakeholder input, and modules were interdependent — changes in costing impacted financing and reports. Real-world planning scenarios influenced design decisions throughout.",
+  designingBeyondSpreadsheets: {
+    sectionNumber: "3",
+    title: "Designing Beyond Spreadsheets",
+    challenge: {
+      title: "The Challenge",
+      intro: "Replace spreadsheet planning while supporting:",
+      items: [
+        "Multi-level hierarchical structures",
+        "Year-wise costing & calculations",
+        "Allocation from multiple sources",
+        "Real-time aggregation & reporting",
+        "Diverse user roles across countries",
+      ],
+    },
+    evolution: {
+      title: "Product Evolution (12 Months)",
+      items: [
+        "Continuous iterative development",
+        "Weekly stakeholder feedback loops",
+        "Evolving requirements",
+        "Interdependent modules (Costing → Financing & Reports)",
+        "Real-world scenarios drove design",
+      ],
+    },
+  },
+  systemArchitecture: {
+    sectionNumber: "4",
+    title: "System Architecture",
+    rolesTitle: "Role-Based Access",
+    roles: [
+      { name: "Global Admin", color: "#16a34a" },
+      { name: "Country Admin", color: "#16a34a" },
+      { name: "Country Collaborator", color: "#ea580c" },
+      { name: "Researcher (Personal Workspace)", color: "#9333ea" },
+      { name: "Country Viewer", color: "#1976d2" },
     ],
-    characteristics: [
-      "Every module went through multiple iterations",
-      "Requirements evolved frequently based on stakeholder input",
-      "Modules were interdependent (changes in costing impacted financing and reports)",
-      "Real-world planning scenarios influenced design decisions",
-    ],
-    approach: [
-      "Weekly feedback loops with stakeholders",
-      "Continuous refinement based on actual use cases",
-      "Rapid iteration cycles across modules",
+    workflowTitle: "Core Workflow",
+    workflowSteps: [
+      {
+        title: "Plan Creation & Configuration",
+        details: "Plan, Hierarchy, Master Data",
+      },
+      {
+        title: "Roadmap (Planning Structure)",
+        details: "Interventions, Objectives, Activities",
+      },
+      {
+        title: "Costing (Core Engine)",
+        details: "Costs, Vaccines, Year-wise Projections",
+      },
+      {
+        title: "Budgeting",
+        details: "Past Data, Secured Funding, Comparisons",
+      },
+      {
+        title: "Financing",
+        details: "Funding Sources, Types, Gaps",
+      },
+      {
+        title: "Reports & Dashboard",
+        details: "Analytics, Visuals, Export",
+      },
     ],
   },
   approach: {
@@ -95,41 +165,97 @@ export const nisCostCaseStudy = {
     steps: [],
     body: "",
   },
-  challenges: {
-    title: "Key Challenges & Design Decisions",
-    items: [
+  deepDive: {
+    id: "solution-walkthrough",
+    title: "Product Deep Dive",
+    subtitle:
+      "A connected workflow where planning, costing, budgeting, financing, and reporting build on each other — with the key design decisions that shaped each module.",
+    chapters: [
       {
-        title: "Roadmap Complexity — Designing for Deep Hierarchies",
+        id: "plan-configuration",
+        title: "Plan Creation & Configuration",
+        intro:
+          "Users begin by creating a plan and defining the structure that every downstream module depends on.",
+        features: [
+          "Plan duration and timeline",
+          "Custom hierarchy levels",
+          "Master data — vaccines, funding sources, classifications",
+        ],
+        visuals: [{ label: "Plan setup & configuration", caption: "Plan creation flow" }],
+      },
+      {
+        id: "roadmap",
+        title: "Roadmap — Deep Hierarchies",
+        intro:
+          "A hierarchical planning structure defining interventions, objectives, activities, and custom levels — the foundation for costing and financing.",
         problem:
           "The roadmap structure expanded from 3 levels to up to 10 levels. Differentiating between these levels visually became difficult, especially within a compact layout.",
         solution:
           "Introduced visual hierarchy using carefully selected colors, ensured WCAG-compliant contrast ratios for accessibility, and balanced clarity with a professional visual tone.",
+        features: [
+          "Main interventions, objectives & activities",
+          "Additional custom hierarchy levels",
+          "Country-specific planning structures",
+        ],
+        visuals: [{ label: "Roadmap hierarchy view", caption: "Multi-level planning structure" }],
       },
       {
-        title: "Excel vs Web Experience — Matching User Mental Models",
-        problem:
-          "Users were accustomed to spreadsheet interactions and expected keyboard navigation, fast data entry, and cell-based editing.",
-        solution:
-          "Designed grid-based interfaces with click-to-edit behavior, enabled keyboard navigation (arrow keys, enter), and supported spreadsheet-like workflows within a structured system.",
+        id: "costing",
+        title: "Costing Engine",
+        intro:
+          "The core engine where users calculate activity costs, vaccine costs, and year-wise financial projections.",
+        decisions: [
+          {
+            title: "Excel vs Web Experience",
+            problem:
+              "Users were accustomed to spreadsheet interactions and expected keyboard navigation, fast data entry, and cell-based editing.",
+            solution:
+              "Designed grid-based interfaces with click-to-edit behavior, enabled keyboard navigation (arrow keys, enter), and supported spreadsheet-like workflows within a structured system.",
+          },
+          {
+            title: "Reducing Navigation Friction",
+            problem:
+              "Editing an activity required navigating to a separate page, breaking user flow and context.",
+            solution:
+              "Introduced inline expandable panels within the same screen, allowing users to view and edit details without losing context.",
+          },
+          {
+            title: "High-Density Data Layout",
+            problem:
+              "Users needed access to activity lists, year-wise data, and detailed configuration fields all at once, within limited screen space.",
+            solution:
+              "Designed a split layout with resizable panels, allowing users to prioritize list view or detail view based on their task.",
+          },
+        ],
+        features: ["Grid-based editing", "Line-item breakdowns", "Inflation handling"],
+        visuals: [
+          { label: "Grid-based costing table", caption: "Spreadsheet-like editing" },
+          { label: "Split panel layout", caption: "Inline detail panels" },
+        ],
       },
       {
-        title: "Reducing Navigation Friction in Costing",
-        problem:
-          "Editing an activity required navigating to a separate page, breaking user flow and context.",
-        solution:
-          "Introduced inline expandable panels within the same screen, allowing users to view and edit details without losing context.",
+        id: "budgeting-financing",
+        title: "Budgeting & Financing",
+        intro:
+          "Countries compare planned costs with historical budgets, allocate funding sources, and identify gaps across the planning cycle.",
+        features: [
+          "Input past budget data & define secured funding",
+          "Compare planned vs historical budgets",
+          "Allocate funding sources and define types (secured/probable)",
+          "Identify and track funding gaps",
+        ],
+        visuals: [
+          { label: "Budget comparison view", caption: "Historical vs planned budgets" },
+          { label: "Funding allocation", caption: "Source-wise financing" },
+        ],
       },
       {
-        title: "Managing High-Density Data on a Single Screen",
+        id: "reporting",
+        title: "Reporting & Insights",
+        intro:
+          "A unified reporting experience enabling multiple analytical views without fragmenting the workflow.",
         problem:
-          "Users needed access to activity lists, year-wise data, and detailed configuration fields all at once, within limited screen space.",
-        solution:
-          "Designed a split layout with resizable panels, allowing users to prioritize list view or detail view based on their task.",
-      },
-      {
-        title: "Designing Multi-Dimensional Reporting Without Fragmentation",
-        problem:
-          "Stakeholders required multiple types of analysis — cost by roadmap level, vaccine, classification, funding by source, and funding gap analysis. The initial approach risked creating multiple independent report screens, increasing system complexity, creating redundancy in data logic, and confusing users about where to find insights.",
+          "Stakeholders required multiple types of analysis — cost by roadmap level, vaccine, classification, funding by source, and funding gap analysis. The initial approach risked creating multiple independent report screens.",
         solution:
           "Designed a single reporting module with dynamic “View By” functionality, allowing users to switch perspectives within the same interface.",
         bullets: [
@@ -137,67 +263,11 @@ export const nisCostCaseStudy = {
           "Consistent table structure across views",
           "Filters adapted based on context",
           "Export reflected the current view configuration",
-          "Reduced navigation complexity and enabled faster decision-making without leaving the system",
         ],
-      },
-    ],
-  },
-  walkthrough: {
-    title: "System Walkthrough",
-    steps: [
-      {
-        title: "Plan Creation & Configuration",
-        intro: "Users begin by creating a plan and defining:",
-        items: [
-          "Plan duration",
-          "Custom hierarchy levels",
-          "Master data (vaccines, funding sources, classifications)",
-        ],
-      },
-      {
-        title: "Roadmap (Planning Structure)",
-        intro: "A hierarchical structure defining:",
-        items: [
-          "Main interventions",
-          "Objectives",
-          "Activities",
-          "Additional custom levels",
-          "This structure forms the foundation for costing and financing",
-        ],
-      },
-      {
-        title: "Costing (Core Engine)",
-        intro: "Users calculate activity costs, vaccine costs, and year-wise financial projections. Includes:",
-        items: [
-          "Grid-based editing",
-          "Line-item breakdowns",
-          "Inflation handling",
-        ],
-      },
-      {
-        title: "Budgeting",
-        intro: "Users:",
-        items: [
-          "Input past budget data",
-          "Define secured funding",
-          "Compare planned vs historical budgets",
-        ],
-      },
-      {
-        title: "Financing",
-        intro: "Users:",
-        items: [
-          "Allocate funding sources",
-          "Define funding types (secured/probable)",
-          "Identify funding gaps",
-        ],
-      },
-      {
-        title: "Reports & Dashboard",
-        intro: "Users analyze costs by hierarchy, vaccine, or classification; funding by source; and funding gaps. Supports:",
-        items: [
-          "Multiple analytical views",
-          "Excel and PDF export",
+        features: ["Multiple analytical views", "Excel and PDF export"],
+        visuals: [
+          { label: "Dynamic View By reporting", caption: "Multi-dimensional analysis" },
+          { label: "Funding gap report", caption: "Gap analysis dashboard" },
         ],
       },
     ],
@@ -207,51 +277,81 @@ export const nisCostCaseStudy = {
     description: "",
     placeholders: [],
   },
-  uat: {
-    title: "Testing & Validation (UAT)",
-    paragraphs: [
-      "Given the complexity of the system, validation was critical to ensure accuracy and usability. I prepared design test cases and use-case scenarios, participated actively in User Acceptance Testing (UAT), and documented test scenarios, expected vs actual outcomes, and issue tracking across modules.",
-      "Key UAT challenges included multi-module dependencies (Costing → Financing → Reports), validation of real-world financial logic, and handling multiple user roles with different permissions. This identified usability gaps early, improved clarity and flow before rollout, and ensured alignment with real user workflows and expectations.",
+  validationRollout: {
+    sectionNumber: "7",
+    title: "Validation & Rollout (UAT)",
+    validationTitle: "UAT & Validation",
+    validationItems: [
+      "Prepared design test cases & use-case scenarios",
+      "Participated in UAT",
+      "Documented expected vs actual outcomes",
+      "Tracked issues & status",
+      "Captured stakeholder feedback",
+      "Worked with developers on edge cases",
     ],
-    deliverables: [
-      "Design test cases and use-case scenarios",
-      "UAT participation across all modules",
-      "Test scenario documentation with expected vs actual outcomes",
-      "Issue tracking and status updates",
-      "User and stakeholder feedback captured across modules",
-      "Close collaboration with developers to refine edge cases",
+    enablementTitle: "Enablement",
+    enablementItems: [
+      { label: "Walkthrough sessions for users", icon: "walkthrough" as const },
+      { label: "Introductory product video", icon: "video" as const },
+      { label: "Guidance on using complex modules", icon: "guidance" as const },
     ],
-  },
-  adoption: {
-    title: "Adoption & Enablement",
-    items: [
-      "Conducted walkthrough sessions for users",
-      "Created an introductory product video",
-      "Provided guidance on how to use complex modules",
+    challengesTitle: "Key UAT Challenges",
+    challengeItems: [
+      "Multi-module dependencies (Costing → Financing → Reports)",
+      "Validation of real-world financial logic",
+      "Multiple user roles & permissions",
     ],
   },
   impact: {
-    title: "Impact & Reflection",
+    resultsTitle: "Impact & Results",
+    metrics: [
+      {
+        value: "Centralized",
+        label: "Replaced interdependent\nspreadsheets",
+        icon: "clock",
+        color: "#1976d2",
+      },
+      {
+        value: "Automated",
+        label: "Cost & financial\ncalculations",
+        icon: "shield",
+        color: "#16a34a",
+      },
+      {
+        value: "5 Roles",
+        label: "Role-based workflows\nacross countries",
+        icon: "globe",
+        color: "#9333ea",
+      },
+      {
+        value: "Real-time",
+        label: "Funding gap analysis\n& reporting",
+        icon: "chart",
+        color: "#ea580c",
+      },
+      {
+        value: "Unified",
+        label: "Single reporting module\nwith dynamic views",
+        icon: "sparkle",
+        color: "#0891b2",
+      },
+    ],
+    learningsTitle: "Key Learnings",
     learnings: [
       {
-        lead: "Reduced spreadsheet dependency:",
-        body: "Countries moved from large, interdependent spreadsheets to a structured platform for national immunization planning, costing, and funding decisions.",
+        body: "Designing interconnected modules — not isolated screens — was essential for a planning ecosystem where costing, financing, and reports depend on each other.",
+        icon: "layers",
+        color: "#eab308",
       },
       {
-        lead: "Improved data consistency:",
-        body: "Automated calculations and structured hierarchies improved accuracy and reduced manual aggregation errors across planning cycles.",
+        body: "Balancing spreadsheet-like flexibility with system structure required matching user mental models through grid editing, keyboard navigation, and inline panels.",
+        icon: "users",
+        color: "#9333ea",
       },
       {
-        lead: "Real-time insights:",
-        body: "Dynamic reporting with multiple analytical views enabled faster funding gap analysis and decision-making without leaving the system.",
-      },
-      {
-        lead: "Collaboration at scale:",
-        body: "Role-based workflows supported Global Admin, Country Admin, Collaborator, Researcher, and Viewer roles across diverse country contexts.",
-      },
-      {
-        lead: "Personal growth:",
-        body: "This project strengthened my ability to design for complex, data-heavy systems, translate evolving requirements into structured solutions, balance flexibility with system constraints, and work across design, analysis, and validation — growing from a UI-focused designer to someone who understands product logic, system behavior, and business impact.",
+        body: "Continuous validation through UAT and stakeholder feedback ensured the product was practical, accurate, and trusted before country-level rollout.",
+        icon: "check",
+        color: "#1976d2",
       },
     ],
   },

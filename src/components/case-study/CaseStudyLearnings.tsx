@@ -1,7 +1,11 @@
 "use client";
 
 import type { LearningItem } from "@/data/caseStudyTypes";
-import { CaseStudyReveal, CaseStudySectionTitle } from "./CaseStudyReveal";
+import {
+  CaseStudyReveal,
+  CaseStudySectionTitle,
+  caseStudySectionClass,
+} from "./CaseStudyReveal";
 
 type CaseStudyLearningsProps = {
   title: string;
@@ -10,7 +14,7 @@ type CaseStudyLearningsProps = {
 
 export function CaseStudyLearnings({ title, items }: CaseStudyLearningsProps) {
   return (
-    <section className="flex w-[85%] max-w-[780px] flex-col gap-7">
+    <section className={`${caseStudySectionClass} flex flex-col gap-7`}>
       <CaseStudyReveal>
         <CaseStudySectionTitle>{title}</CaseStudySectionTitle>
       </CaseStudyReveal>

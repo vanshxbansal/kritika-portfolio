@@ -1,35 +1,49 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { nisCostCaseStudy } from "@/data/nisCostCaseStudy";
 import { nisCostTheme } from "@/data/nisCostTheme";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 import { CaseStudyHero } from "./CaseStudyHero";
-import { CaseStudyLearnings } from "./CaseStudyLearnings";
+import { CaseStudyImpactResults } from "./CaseStudyImpactResults";
 import { CaseStudyMoreProjects } from "./CaseStudyMoreProjects";
-import { CaseStudyReveal } from "./CaseStudyReveal";
-import {
-  CaseStudyChallenges,
-  CaseStudyContentSection,
-  CaseStudyHighlightBox,
-  CaseStudyListSection,
-  CaseStudySplitSection,
-} from "./CaseStudySections";
+import { CaseStudyProcessNav } from "./CaseStudyProcessNav";
+import { CaseStudyReveal, caseStudySectionClass } from "./CaseStudyReveal";
+import { CaseStudyValidationRollout } from "./CaseStudyValidationRollout";
+import { CaseStudyContentSection, CaseStudyListSection } from "./CaseStudySections";
 import { CaseStudyThemeProvider } from "./CaseStudyThemeContext";
-import { CaseStudyWalkthrough } from "./CaseStudyWalkthrough";
+import { CaseStudyDeepDive } from "./CaseStudyDeepDive";
+import {
+  CaseStudyDesigningBeyondSpreadsheets,
+  CaseStudySystemArchitecture,
+} from "./CaseStudyContextPanels";
+import { CaseStudyExecutiveSummary } from "./CaseStudyExecutiveSummary";
+
+function ProcessAnchor({
+  id,
+  children,
+}: {
+  id: string;
+  children: ReactNode;
+}) {
+  return (
+    <div id={id} className="w-full self-stretch scroll-mt-[148px]">
+      {children}
+    </div>
+  );
+}
 
 export function NisCostCaseStudyPage() {
   const {
     hero,
-    overview,
+    executiveSummary,
+    processNav,
     role,
-    problem,
-    roleBasedDesign,
-    iterativeDevelopment,
-    challenges,
-    walkthrough,
-    uat,
-    adoption,
+    designingBeyondSpreadsheets,
+    systemArchitecture,
+    deepDive,
+    validationRollout,
     impact,
     moreProjects,
   } = nisCostCaseStudy;
@@ -43,57 +57,49 @@ export function NisCostCaseStudyPage() {
           lines={hero.lines}
           subtitle={hero.subtitle}
           meta={hero.meta}
+          layout={hero.layout}
+          eyebrow={hero.eyebrow}
+          imageAlt={hero.imageAlt}
         />
 
-        <CaseStudySplitSection
-          title={overview.title}
-          paragraphs={overview.paragraphs}
-          imageAlt={overview.imageAlt}
-          imageCaption={overview.imageCaption}
-        />
+        <CaseStudyProcessNav {...processNav} />
 
-        <CaseStudyContentSection title={role.title} paragraphs={role.paragraphs}>
-          <CaseStudyListSection title="Key responsibilities" items={role.contributions} />
-        </CaseStudyContentSection>
+        <ProcessAnchor id="process-discover">
+          <CaseStudyExecutiveSummary {...executiveSummary} />
 
-        <CaseStudyContentSection title={problem.title} paragraphs={problem.paragraphs}>
-          <CaseStudyListSection title="The system needed to support" items={problem.objectives} />
-          <CaseStudyHighlightBox title="Core challenge" body={problem.highlight} />
-        </CaseStudyContentSection>
+          <div className="mt-16 md:mt-20">
+            <CaseStudyContentSection title={role.title} paragraphs={role.paragraphs}>
+              <CaseStudyListSection title="Key responsibilities" items={role.contributions} />
+            </CaseStudyContentSection>
+          </div>
+        </ProcessAnchor>
 
-        <CaseStudyContentSection
-          title={roleBasedDesign.title}
-          paragraphs={[roleBasedDesign.intro]}
-        >
-          <CaseStudyListSection title="Platform roles" items={roleBasedDesign.roles} />
-        </CaseStudyContentSection>
+        <ProcessAnchor id="process-define">
+          <CaseStudyDesigningBeyondSpreadsheets {...designingBeyondSpreadsheets} />
+        </ProcessAnchor>
 
-        <CaseStudyContentSection
-          title={iterativeDevelopment.title}
-          paragraphs={iterativeDevelopment.paragraphs}
-        >
-          <CaseStudyListSection
-            title="Key characteristics"
-            items={iterativeDevelopment.characteristics}
+        <ProcessAnchor id="process-design">
+          <CaseStudySystemArchitecture {...systemArchitecture} />
+        </ProcessAnchor>
+
+        <ProcessAnchor id="process-build">
+          <CaseStudyDeepDive
+            id={deepDive.id}
+            title={deepDive.title}
+            subtitle={deepDive.subtitle}
+            chapters={deepDive.chapters}
           />
-          <CaseStudyListSection title="Approach" items={iterativeDevelopment.approach} />
-        </CaseStudyContentSection>
+        </ProcessAnchor>
 
-        <CaseStudyChallenges title={challenges.title} items={challenges.items} />
+        <ProcessAnchor id="process-validate">
+          <CaseStudyValidationRollout {...validationRollout} />
+        </ProcessAnchor>
 
-        <CaseStudyWalkthrough title={walkthrough.title} steps={walkthrough.steps} />
+        <ProcessAnchor id="process-rollout">
+          <CaseStudyImpactResults {...impact} />
+        </ProcessAnchor>
 
-        <CaseStudyContentSection title={uat.title} paragraphs={uat.paragraphs}>
-          <CaseStudyListSection title="My contribution" items={uat.deliverables} />
-        </CaseStudyContentSection>
-
-        <CaseStudyContentSection title={adoption.title}>
-          <CaseStudyListSection title="Rollout support" items={adoption.items} />
-        </CaseStudyContentSection>
-
-        <CaseStudyLearnings title={impact.title} items={impact.learnings} />
-
-        <CaseStudyReveal className="pb-2">
+        <CaseStudyReveal className={`${caseStudySectionClass} pb-2`}>
           <p className="text-center font-display text-[26px] font-semibold text-[#1e1e2f]">
             Thank you for reading!
           </p>

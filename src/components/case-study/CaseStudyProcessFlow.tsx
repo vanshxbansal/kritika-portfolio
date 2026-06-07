@@ -5,6 +5,7 @@ import {
   CaseStudyBody,
   CaseStudyReveal,
   CaseStudySectionTitle,
+  caseStudySectionClass,
 } from "./CaseStudyReveal";
 import { SteppedTimeline } from "./SteppedTimeline";
 
@@ -27,7 +28,7 @@ export function CaseStudyProcessFlow({
   }));
 
   return (
-    <section className="flex w-[85%] max-w-[960px] flex-col items-start gap-8">
+    <section className={`${caseStudySectionClass} flex flex-col items-start gap-8`}>
       <CaseStudyReveal>
         <CaseStudySectionTitle>{title}</CaseStudySectionTitle>
       </CaseStudyReveal>
@@ -35,7 +36,7 @@ export function CaseStudyProcessFlow({
       <SteppedTimeline items={timelineItems} columns={steps.length} />
 
       {body ? (
-        <CaseStudyReveal delay={0.1} className="w-full max-w-[780px]">
+        <CaseStudyReveal delay={0.1} className="w-full">
           <CaseStudyBody>{body}</CaseStudyBody>
         </CaseStudyReveal>
       ) : null}

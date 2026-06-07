@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { MoreProject } from "@/data/caseStudyTypes";
-import { CaseStudyReveal, CaseStudySectionTitle } from "./CaseStudyReveal";
+import { CaseStudyReveal, CaseStudySectionTitle, caseStudySectionClass } from "./CaseStudyReveal";
 
 type CaseStudyMoreProjectsProps = {
   projects: MoreProject[];
@@ -11,7 +11,7 @@ type CaseStudyMoreProjectsProps = {
 
 export function CaseStudyMoreProjects({ projects }: CaseStudyMoreProjectsProps) {
   return (
-    <section className="flex w-[85%] max-w-[960px] flex-col items-center gap-10 pb-6 pt-2">
+    <section className={`${caseStudySectionClass} flex flex-col items-center gap-10 pb-6 pt-2`}>
       <CaseStudyReveal>
         <CaseStudySectionTitle className="text-center">MORE PROJECTS</CaseStudySectionTitle>
       </CaseStudyReveal>

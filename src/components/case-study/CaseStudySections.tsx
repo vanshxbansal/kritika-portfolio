@@ -5,6 +5,7 @@ import {
   CaseStudyBody,
   CaseStudyReveal,
   CaseStudySectionTitle,
+  caseStudySectionClass,
 } from "./CaseStudyReveal";
 import { useCaseStudyTheme } from "./CaseStudyThemeContext";
 
@@ -26,7 +27,7 @@ export function CaseStudySplitSection({
   const theme = useCaseStudyTheme();
 
   return (
-    <section className="w-[85%] max-w-[960px]">
+    <section className={caseStudySectionClass}>
       <div
         className={`flex flex-col items-start gap-8 md:gap-10 ${
           reverse ? "md:flex-row-reverse" : "md:flex-row"
@@ -91,7 +92,7 @@ export function CaseStudyContentSection({
   children,
 }: CaseStudyContentSectionProps) {
   return (
-    <section className="flex w-[85%] max-w-[780px] flex-col gap-5">
+    <section className={`${caseStudySectionClass} flex flex-col gap-5`}>
       <CaseStudyReveal>
         <CaseStudySectionTitle>{title}</CaseStudySectionTitle>
       </CaseStudyReveal>
@@ -179,7 +180,7 @@ export function CaseStudyChallenges({ title, items }: CaseStudyChallengesProps) 
   const theme = useCaseStudyTheme();
 
   return (
-    <section className="flex w-[85%] max-w-[780px] flex-col gap-7">
+    <section className={`${caseStudySectionClass} flex flex-col gap-7`}>
       <CaseStudyReveal>
         <CaseStudySectionTitle>{title}</CaseStudySectionTitle>
       </CaseStudyReveal>
@@ -253,8 +254,8 @@ export function CaseStudyFinalDesigns({
   const theme = useCaseStudyTheme();
 
   return (
-    <section className="flex w-[85%] max-w-[960px] flex-col gap-7">
-      <CaseStudyReveal className="flex max-w-[780px] flex-col gap-4">
+    <section className={`${caseStudySectionClass} flex flex-col gap-7`}>
+      <CaseStudyReveal className="flex flex-col gap-4">
         <CaseStudySectionTitle>{title}</CaseStudySectionTitle>
         <CaseStudyBody>{description}</CaseStudyBody>
       </CaseStudyReveal>

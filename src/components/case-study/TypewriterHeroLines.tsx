@@ -17,6 +17,7 @@ type TypewriterHeroLinesProps = {
   accentColor: string;
   defaultColor: string;
   onComplete?: () => void;
+  align?: "center" | "left";
 };
 
 export function TypewriterHeroLines({
@@ -24,6 +25,7 @@ export function TypewriterHeroLines({
   accentColor,
   defaultColor,
   onComplete,
+  align = "center",
 }: TypewriterHeroLinesProps) {
   const prefersReducedMotion = useReducedMotion();
   const [lineIndex, setLineIndex] = useState(0);
@@ -67,9 +69,11 @@ export function TypewriterHeroLines({
   const headingClass =
     "font-display text-[clamp(32px,5.5vw,56px)] font-semibold leading-[1.08] tracking-[-0.02em]";
 
+  const alignClass = align === "left" ? "items-start text-left" : "items-center text-center";
+
   if (prefersReducedMotion) {
     return (
-      <div className="flex flex-col items-center text-center">
+      <div className={`flex flex-col ${alignClass}`}>
         {lines.map((line) => (
           <h1
             key={line.text}
@@ -84,7 +88,7 @@ export function TypewriterHeroLines({
   }
 
   return (
-    <div className="flex flex-col items-center text-center">
+    <div className={`flex flex-col ${alignClass}`}>
       {lines.map((line, index) => {
         if (index > lineIndex) return null;
 

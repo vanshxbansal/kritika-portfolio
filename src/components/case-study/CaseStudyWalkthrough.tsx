@@ -4,6 +4,7 @@ import {
   CaseStudyBody,
   CaseStudyReveal,
   CaseStudySectionTitle,
+  caseStudySectionClass,
 } from "./CaseStudyReveal";
 import { useCaseStudyTheme } from "./CaseStudyThemeContext";
 
@@ -22,7 +23,7 @@ export function CaseStudyWalkthrough({ title, steps }: CaseStudyWalkthroughProps
   const theme = useCaseStudyTheme();
 
   return (
-    <section className="flex w-[85%] max-w-[780px] flex-col gap-7">
+    <section className={`${caseStudySectionClass} flex flex-col gap-7`}>
       <CaseStudyReveal>
         <CaseStudySectionTitle>{title}</CaseStudySectionTitle>
       </CaseStudyReveal>

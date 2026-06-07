@@ -1,6 +1,9 @@
+export type CaseStudyMetaIcon = "calendar" | "user" | "users" | "monitor" | "globe";
+
 export type CaseStudyMeta = {
   label: string;
   value: string;
+  icon?: CaseStudyMetaIcon;
 };
 
 export type ProcessStep = {
@@ -12,6 +15,112 @@ export type ProcessStep = {
 export type LearningItem = {
   lead: string;
   body: string;
+};
+
+export type ImpactMetricIcon =
+  | "clock"
+  | "shield"
+  | "globe"
+  | "chart"
+  | "sparkle";
+
+export type ImpactLearningIcon = "lightbulb" | "users" | "layers" | "check";
+
+export type ImpactMetric = {
+  value: string;
+  label: string;
+  icon: ImpactMetricIcon;
+  color: string;
+};
+
+export type ImpactLearningCard = {
+  body: string;
+  icon: ImpactLearningIcon;
+  color: string;
+};
+
+export type CaseStudyImpactData = {
+  resultsTitle: string;
+  metrics: ImpactMetric[];
+  learningsTitle: string;
+  learnings: ImpactLearningCard[];
+};
+
+export type ExecutiveSummaryCardIcon = "problem" | "solution" | "outcome";
+
+export type ExecutiveSummaryCard = {
+  title: string;
+  intro?: string;
+  items: string[];
+  color: string;
+  icon: ExecutiveSummaryCardIcon;
+};
+
+export type ExecutiveSummaryData = {
+  title: string;
+  sectionNumber?: string;
+  cards: ExecutiveSummaryCard[];
+};
+
+export type ProcessPhase = {
+  title: string;
+  color: string;
+};
+
+export type ProcessNavAnchor = {
+  id: string;
+  phase: number;
+};
+
+export type ProcessNavData = {
+  phases: ProcessPhase[];
+  anchors: ProcessNavAnchor[];
+};
+
+export type PlatformRoleItem = {
+  name: string;
+  color: string;
+};
+
+export type CoreWorkflowStep = {
+  title: string;
+  details: string;
+};
+
+export type DesigningBeyondSpreadsheetsData = {
+  sectionNumber?: string;
+  title: string;
+  challenge: {
+    title: string;
+    intro: string;
+    items: string[];
+  };
+  evolution: {
+    title: string;
+    items: string[];
+  };
+};
+
+export type SystemArchitectureData = {
+  sectionNumber?: string;
+  title: string;
+  rolesTitle: string;
+  roles: PlatformRoleItem[];
+  workflowTitle: string;
+  workflowSteps: CoreWorkflowStep[];
+};
+
+export type EnablementIcon = "walkthrough" | "video" | "guidance";
+
+export type ValidationRolloutData = {
+  sectionNumber?: string;
+  title: string;
+  validationTitle: string;
+  validationItems: string[];
+  enablementTitle: string;
+  enablementItems: { label: string; icon: EnablementIcon }[];
+  challengesTitle: string;
+  challengeItems: string[];
 };
 
 export type ChallengeItem = {
@@ -26,6 +135,30 @@ export type WalkthroughStep = {
   title: string;
   intro?: string;
   items: string[];
+};
+
+export type DeepDiveVisual = {
+  label: string;
+  caption?: string;
+};
+
+export type DeepDiveDecision = {
+  title: string;
+  problem: string;
+  solution: string;
+  bullets?: string[];
+};
+
+export type DeepDiveChapter = {
+  id: string;
+  title: string;
+  intro?: string;
+  problem?: string;
+  solution?: string;
+  bullets?: string[];
+  features?: string[];
+  decisions?: DeepDiveDecision[];
+  visuals: DeepDiveVisual[];
 };
 
 export type MoreProject = {
@@ -55,6 +188,9 @@ export type CaseStudyData = {
     lines: { text: string; color: "default" | "accent" }[];
     subtitle: string;
     meta: CaseStudyMeta[];
+    layout?: "centered" | "split";
+    eyebrow?: string;
+    imageAlt?: string;
   };
   overview: {
     title: string;
@@ -78,7 +214,7 @@ export type CaseStudyData = {
     steps: ProcessStep[];
     body?: string;
   };
-  challenges: {
+  challenges?: {
     title: string;
     items: ChallengeItem[];
   };
@@ -99,24 +235,27 @@ export type CaseStudyData = {
   moreProjects: MoreProject[];
 };
 
-export type NisCostCaseStudyData = CaseStudyData & {
-  roleBasedDesign: {
-    title: string;
-    intro: string;
-    roles: string[];
-  };
-  iterativeDevelopment: {
-    title: string;
-    paragraphs: string[];
-    characteristics: string[];
-    approach: string[];
-  };
-  walkthrough: {
+export type StructuredCaseStudyData = Omit<
+  CaseStudyData,
+  "impact" | "overview" | "problem" | "uat"
+> & {
+  executiveSummary: ExecutiveSummaryData;
+  processNav: ProcessNavData;
+  designingBeyondSpreadsheets: DesigningBeyondSpreadsheetsData;
+  systemArchitecture: SystemArchitectureData;
+  validationRollout: ValidationRolloutData;
+  walkthrough?: {
     title: string;
     steps: WalkthroughStep[];
   };
-  adoption: {
+  deepDive: {
+    id: string;
     title: string;
-    items: string[];
+    subtitle?: string;
+    chapters: DeepDiveChapter[];
   };
+  impact: CaseStudyImpactData;
 };
+
+export type NisCostCaseStudyData = StructuredCaseStudyData;
+export type HpcCaseStudyData = StructuredCaseStudyData;
