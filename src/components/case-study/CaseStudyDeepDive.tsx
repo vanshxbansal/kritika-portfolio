@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { DeepDiveChapter } from "@/data/caseStudyTypes";
 import {
+  CASE_STUDY_CHAPTER_NAV_STICKY_TOP,
+  CASE_STUDY_SCROLL_OFFSET,
   CaseStudyBody,
   CaseStudyReveal,
   CaseStudySectionTitle,
@@ -296,7 +298,8 @@ export function CaseStudyDeepDive({
     <section
       id={id}
       ref={sectionRef}
-      className={`scroll-mt-[120px] ${caseStudySectionClass}`}
+      className={caseStudySectionClass}
+      style={{ scrollMarginTop: CASE_STUDY_SCROLL_OFFSET }}
     >
       <CaseStudyReveal className="mb-10 flex flex-col gap-4 md:mb-12">
         <CaseStudySectionTitle>{title}</CaseStudySectionTitle>
@@ -304,7 +307,10 @@ export function CaseStudyDeepDive({
       </CaseStudyReveal>
 
       {/* Mobile chapter nav — sticky pills */}
-      <div className="sticky top-[72px] z-20 -mx-1 mb-8 bg-white/90 pb-2 pt-1 backdrop-blur-md lg:hidden">
+      <div
+        className="sticky z-20 -mx-1 mb-8 bg-white/90 pb-2 pt-1 backdrop-blur-md lg:hidden"
+        style={{ top: CASE_STUDY_CHAPTER_NAV_STICKY_TOP }}
+      >
         <div className="flex gap-2 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {chapters.map((chapter, index) => (
             <ChapterNavButton
@@ -323,7 +329,8 @@ export function CaseStudyDeepDive({
         {/* Desktop sticky sidebar */}
         <aside className="hidden w-[200px] shrink-0 xl:w-[240px] lg:block">
           <nav
-            className="sticky top-[120px] flex flex-col gap-1"
+            className="sticky flex flex-col gap-1"
+            style={{ top: CASE_STUDY_SCROLL_OFFSET }}
             aria-label="Product deep dive chapters"
           >
             {chapters.map((chapter, index) => (
@@ -352,7 +359,7 @@ export function CaseStudyDeepDive({
                       if (node) chapterRefs.current.set(chapter.id, node);
                       else chapterRefs.current.delete(chapter.id);
                     }}
-                    className="scroll-mt-[140px]"
+                    style={{ scrollMarginTop: CASE_STUDY_SCROLL_OFFSET }}
                   >
                     <div
                       className={`flex flex-col gap-8 lg:gap-12 ${

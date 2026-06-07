@@ -9,7 +9,7 @@ import { CaseStudyHero } from "./CaseStudyHero";
 import { CaseStudyImpactResults } from "./CaseStudyImpactResults";
 import { CaseStudyMoreProjects } from "./CaseStudyMoreProjects";
 import { CaseStudyProcessNav } from "./CaseStudyProcessNav";
-import { CaseStudyReveal, caseStudySectionClass } from "./CaseStudyReveal";
+import { CaseStudyReveal, CASE_STUDY_SCROLL_OFFSET, caseStudySectionClass } from "./CaseStudyReveal";
 import { CaseStudyValidationRollout } from "./CaseStudyValidationRollout";
 import { CaseStudyContentSection, CaseStudyListSection } from "./CaseStudySections";
 import { CaseStudyThemeProvider } from "./CaseStudyThemeContext";
@@ -28,7 +28,11 @@ function ProcessAnchor({
   children: ReactNode;
 }) {
   return (
-    <div id={id} className="w-full self-stretch scroll-mt-[148px]">
+    <div
+      id={id}
+      className="w-full self-stretch"
+      style={{ scrollMarginTop: CASE_STUDY_SCROLL_OFFSET }}
+    >
       {children}
     </div>
   );

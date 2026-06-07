@@ -10,6 +10,16 @@ const CASE_STUDY_EASE = [0.44, 0, 0.56, 1] as const;
 export const caseStudySectionClass =
   "w-full self-stretch px-5 md:px-10 lg:px-14 xl:px-16";
 
+/** Sticky stack: navbar (h-16) + compact process nav */
+export const CASE_STUDY_NAVBAR_H = 64;
+export const CASE_STUDY_PROCESS_STICKY_TOP = CASE_STUDY_NAVBAR_H;
+export const CASE_STUDY_PROCESS_NAV_H = 76;
+/** scroll-margin / sticky offset below navbar + process bar */
+export const CASE_STUDY_SCROLL_OFFSET =
+  CASE_STUDY_NAVBAR_H + CASE_STUDY_PROCESS_NAV_H + 12;
+export const CASE_STUDY_CHAPTER_NAV_STICKY_TOP =
+  CASE_STUDY_NAVBAR_H + CASE_STUDY_PROCESS_NAV_H + 8;
+
 type CaseStudyRevealProps = {
   children: ReactNode;
   className?: string;

@@ -1,7 +1,7 @@
 export const PROCESS_EASE = [0.44, 0, 0.56, 1] as const;
 
 export function ProcessPhaseIcon({ index, color }: { index: number; color: string }) {
-  const className = "h-5 w-5";
+  const className = "h-4 w-4";
 
   const icons = [
     <svg key="0" viewBox="0 0 24 24" className={className} fill="none" stroke={color} strokeWidth={2}>

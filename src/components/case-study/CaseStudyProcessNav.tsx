@@ -3,7 +3,10 @@
 import { motion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { ProcessNavData } from "@/data/caseStudyTypes";
-import { caseStudySectionClass } from "./CaseStudyReveal";
+import {
+  CASE_STUDY_PROCESS_STICKY_TOP,
+  caseStudySectionClass,
+} from "./CaseStudyReveal";
 import { PROCESS_EASE, ProcessPhaseIcon } from "./processPhases";
 import { useCaseStudyTheme } from "./CaseStudyThemeContext";
 
@@ -80,11 +83,14 @@ export function CaseStudyProcessNav({ phases, anchors }: CaseStudyProcessNavProp
   );
 
   return (
-    <div className={`sticky top-[68px] z-30 w-full self-stretch ${caseStudySectionClass}`}>
-      <div className="rounded-2xl border border-[#e8edf3] bg-white/95 px-4 py-4 shadow-[0_8px_30px_rgba(15,23,42,0.06)] backdrop-blur-md md:px-6 md:py-5">
+    <div
+      className={`sticky z-30 w-full self-stretch ${caseStudySectionClass}`}
+      style={{ top: CASE_STUDY_PROCESS_STICKY_TOP }}
+    >
+      <div className="rounded-xl border border-[#e8edf3] bg-white/95 px-3 py-2 shadow-[0_4px_20px_rgba(15,23,42,0.05)] backdrop-blur-md md:px-5 md:py-2.5">
         <div className="overflow-x-auto overflow-y-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          <div className="relative mx-auto min-w-[640px] max-w-[960px] px-0 py-1">
-            <div className="absolute left-[8%] right-[8%] top-8 h-px" aria-hidden>
+          <div className="relative mx-auto min-w-[640px] max-w-[960px]">
+            <div className="absolute left-[8%] right-[8%] top-5 h-px" aria-hidden>
               <div className="absolute inset-0 bg-[#dbe4ee]" />
               <motion.div
                 className="absolute inset-y-0 left-0"
@@ -105,22 +111,22 @@ export function CaseStudyProcessNav({ phases, anchors }: CaseStudyProcessNavProp
                     key={phase.title}
                     type="button"
                     onClick={() => scrollToPhase(index)}
-                    className="group flex flex-col items-center gap-2 border-0 bg-transparent p-0 text-center md:gap-2.5"
+                    className="group flex flex-col items-center gap-1 border-0 bg-transparent p-0 text-center"
                     aria-current={active ? "step" : undefined}
                   >
-                    <span className="relative z-[1] flex h-14 w-full items-center justify-center">
+                    <span className="relative z-[1] flex h-10 w-full items-center justify-center">
                       <motion.span
-                        className="flex h-10 w-10 items-center justify-center rounded-full border bg-white transition-shadow md:h-11 md:w-11"
+                        className="flex h-8 w-8 items-center justify-center rounded-full border bg-white transition-shadow md:h-9 md:w-9"
                         style={{
                           borderColor: visible ? phase.color : `${phase.color}33`,
                           boxShadow: active
-                            ? `0 0 0 4px ${phase.color}18`
+                            ? `0 0 0 3px ${phase.color}18`
                             : completed
-                              ? `0 4px 12px ${phase.color}18`
+                              ? `0 4px 10px ${phase.color}16`
                               : undefined,
                         }}
                         animate={{
-                          scale: active ? 1.08 : 1,
+                          scale: active ? 1.06 : 1,
                           opacity: visible ? 1 : 0.45,
                         }}
                         transition={{ duration: 0.35, ease: PROCESS_EASE }}
@@ -130,7 +136,7 @@ export function CaseStudyProcessNav({ phases, anchors }: CaseStudyProcessNavProp
                     </span>
 
                     <span
-                      className={`max-w-[92px] font-display text-[10px] font-medium leading-snug transition-colors md:max-w-[100px] md:text-xs ${
+                      className={`max-w-[88px] font-display text-[9px] font-medium leading-snug transition-colors md:max-w-[96px] md:text-[10px] ${
                         active
                           ? "text-[#1e1e2f]"
                           : visible
