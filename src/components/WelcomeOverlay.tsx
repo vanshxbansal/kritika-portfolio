@@ -53,19 +53,23 @@ export function WelcomeOverlay() {
   useEffect(() => {
     if (!active || prefersReducedMotion) return;
 
+    const dismiss = () => {
+      setActive(false);
+      document.documentElement.style.overflow = "";
+    };
+
     const expandTimer = window.setTimeout(() => setPhase("expand"), 1000);
     const exitTimer = window.setTimeout(() => setPhase("exit"), 3200);
     const fadeTimer = window.setTimeout(() => setPhase("fade"), 4500);
-    const hideTimer = window.setTimeout(() => {
-      setActive(false);
-      document.documentElement.style.overflow = "";
-    }, 5100);
+    const hideTimer = window.setTimeout(dismiss, 5100);
+    const failsafeTimer = window.setTimeout(dismiss, 6500);
 
     return () => {
       clearTimeout(expandTimer);
       clearTimeout(exitTimer);
       clearTimeout(fadeTimer);
       clearTimeout(hideTimer);
+      clearTimeout(failsafeTimer);
     };
   }, [active, prefersReducedMotion]);
 

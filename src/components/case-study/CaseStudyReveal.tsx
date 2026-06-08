@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useInView, useReducedMotion } from "framer-motion";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { type ReactNode } from "react";
 import { useCaseStudyTheme } from "./CaseStudyThemeContext";
 
 /** Matches kartikgoel.com/google-internship appear animation */
@@ -34,35 +34,21 @@ export function CaseStudyReveal({
   delay = 0,
   y = 32,
 }: CaseStudyRevealProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-80px", amount: 0.35 });
   const shouldReduceMotion = useReducedMotion();
-  const [hasMounted, setHasMounted] = useState(false);
-  const hiddenState = { opacity: 0, y };
-  const visibleState = { opacity: 1, y: 0 };
 
-  useEffect(() => {
-    const timer = window.setTimeout(() => setHasMounted(true), 0);
-    return () => window.clearTimeout(timer);
-  }, []);
-
-  if (!hasMounted) {
-    return (
-      <div ref={ref} className={className}>
-        {children}
-      </div>
-    );
+  if (shouldReduceMotion) {
+    return <div className={className}>{children}</div>;
   }
 
   return (
     <motion.div
-      ref={ref}
       className={className}
-      initial={false}
-      animate={shouldReduceMotion || inView ? visibleState : hiddenState}
+      initial={{ opacity: 0, y }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "0px 0px -8% 0px", amount: 0.12 }}
       transition={{
-        duration: shouldReduceMotion ? 0 : 0.4,
-        delay: shouldReduceMotion ? 0 : delay,
+        duration: 0.4,
+        delay,
         ease: CASE_STUDY_EASE,
       }}
     >
