@@ -7,17 +7,14 @@ import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 import { CaseStudyHero } from "./CaseStudyHero";
 import { CaseStudyImpactResults } from "./CaseStudyImpactResults";
-import { CaseStudyMoreProjects } from "./CaseStudyMoreProjects";
 import { CaseStudyProcessNav } from "./CaseStudyProcessNav";
 import { CaseStudyReveal, CASE_STUDY_SCROLL_OFFSET, caseStudySectionClass } from "./CaseStudyReveal";
 import { CaseStudyValidationRollout } from "./CaseStudyValidationRollout";
-import { CaseStudyContentSection, CaseStudyListSection } from "./CaseStudySections";
 import { CaseStudyThemeProvider } from "./CaseStudyThemeContext";
 import { CaseStudyDeepDive } from "./CaseStudyDeepDive";
-import {
-  CaseStudyDesigningBeyondSpreadsheets,
-  CaseStudySystemArchitecture,
-} from "./CaseStudyContextPanels";
+import { HpcOwnershipSection } from "./HpcOwnershipSection";
+import { HpcSolutionWalkthroughSection } from "./HpcSolutionWalkthroughSection";
+import { CaseStudyDesigningBeyondSpreadsheets } from "./CaseStudyContextPanels";
 import { CaseStudyExecutiveSummary } from "./CaseStudyExecutiveSummary";
 
 function ProcessAnchor({
@@ -42,19 +39,18 @@ export function HpcCaseStudyPage() {
   const {
     hero,
     executiveSummary,
+    ownership,
     processNav,
-    role,
     designingBeyondSpreadsheets,
-    systemArchitecture,
     deepDive,
+    solutionWalkthrough,
     validationRollout,
     impact,
-    moreProjects,
   } = hpcCaseStudy;
 
   return (
     <CaseStudyThemeProvider theme={hpcTheme}>
-      <Navbar />
+      <Navbar wide />
       <main className="flex flex-col items-center gap-16 bg-white pb-16 pt-0 md:gap-20">
         <CaseStudyHero
           id={hero.id}
@@ -64,26 +60,23 @@ export function HpcCaseStudyPage() {
           layout={hero.layout}
           eyebrow={hero.eyebrow}
           imageAlt={hero.imageAlt}
+          imageSrc={hero.imageSrc}
         />
 
         <CaseStudyProcessNav {...processNav} />
 
         <ProcessAnchor id="process-discover">
           <CaseStudyExecutiveSummary {...executiveSummary} />
-
-          <div className="mt-16 md:mt-20">
-            <CaseStudyContentSection title={role.title} paragraphs={role.paragraphs}>
-              <CaseStudyListSection title="Key contributions" items={role.contributions} />
-            </CaseStudyContentSection>
-          </div>
         </ProcessAnchor>
 
         <ProcessAnchor id="process-define">
           <CaseStudyDesigningBeyondSpreadsheets {...designingBeyondSpreadsheets} />
-        </ProcessAnchor>
 
-        <ProcessAnchor id="process-design">
-          <CaseStudySystemArchitecture {...systemArchitecture} />
+          {ownership ? (
+            <div className="mt-16 md:mt-20">
+              <HpcOwnershipSection {...ownership} />
+            </div>
+          ) : null}
         </ProcessAnchor>
 
         <ProcessAnchor id="process-build">
@@ -93,6 +86,12 @@ export function HpcCaseStudyPage() {
             subtitle={deepDive.subtitle}
             chapters={deepDive.chapters}
           />
+
+          {solutionWalkthrough ? (
+            <div className="mt-16 md:mt-20">
+              <HpcSolutionWalkthroughSection {...solutionWalkthrough} />
+            </div>
+          ) : null}
         </ProcessAnchor>
 
         <ProcessAnchor id="process-validate">
@@ -108,8 +107,6 @@ export function HpcCaseStudyPage() {
             Thank you for reading!
           </p>
         </CaseStudyReveal>
-
-        <CaseStudyMoreProjects projects={moreProjects} />
       </main>
 
       <Footer backHref="/#spotlight" backLabel="Back to projects" />

@@ -29,11 +29,13 @@ export type ImpactLearningIcon = "lightbulb" | "users" | "layers" | "check";
 export type ImpactMetric = {
   value: string;
   label: string;
+  note?: string;
   icon: ImpactMetricIcon;
   color: string;
 };
 
 export type ImpactLearningCard = {
+  title?: string;
   body: string;
   icon: ImpactLearningIcon;
   color: string;
@@ -64,6 +66,9 @@ export type ExecutiveSummaryData = {
 
 export type ProcessPhase = {
   title: string;
+  shortTitle?: string;
+  summary?: string;
+  details?: string[];
   color: string;
 };
 
@@ -90,6 +95,16 @@ export type CoreWorkflowStep = {
 export type DesigningBeyondSpreadsheetsData = {
   sectionNumber?: string;
   title: string;
+  context?: {
+    paragraphs: string[];
+    sections?: {
+      title: string;
+      body: string;
+      items?: string[];
+    }[];
+    issuesTitle: string;
+    issues: string[];
+  };
   challenge: {
     title: string;
     intro: string;
@@ -104,6 +119,10 @@ export type DesigningBeyondSpreadsheetsData = {
 export type SystemArchitectureData = {
   sectionNumber?: string;
   title: string;
+  approach?: {
+    intro: string;
+    items: string[];
+  };
   rolesTitle: string;
   roles: PlatformRoleItem[];
   workflowTitle: string;
@@ -119,6 +138,24 @@ export type ValidationRolloutData = {
   validationItems: string[];
   enablementTitle: string;
   enablementItems: { label: string; icon: EnablementIcon }[];
+  trainingVideo?: {
+    title: string;
+    href?: string;
+    thumbnailSrc?: string;
+    caption: string;
+  };
+  trainingGuides?: {
+    title: string;
+    description: string;
+    languages: { label: string; color: string }[];
+    cards: {
+      step: string;
+      title: string;
+      subtitle: string;
+      color: string;
+      imageSrc?: string;
+    }[];
+  };
   challengesTitle: string;
   challengeItems: string[];
 };
@@ -137,9 +174,17 @@ export type WalkthroughStep = {
   items: string[];
 };
 
+export type SolutionWalkthroughData = {
+  eyebrow: string;
+  title: string;
+  description: string;
+  bullets: string[];
+};
+
 export type DeepDiveVisual = {
   label: string;
   caption?: string;
+  imageSrc?: string;
 };
 
 export type DeepDiveDecision = {
@@ -152,7 +197,13 @@ export type DeepDiveDecision = {
 export type DeepDiveChapter = {
   id: string;
   title: string;
+  subtitle?: string;
   intro?: string;
+  challenge?: string;
+  whyItMattered?: string;
+  decisionIntro?: string;
+  decisionItems?: string[];
+  outcome?: string;
   problem?: string;
   solution?: string;
   bullets?: string[];
@@ -191,6 +242,7 @@ export type CaseStudyData = {
     layout?: "centered" | "split";
     eyebrow?: string;
     imageAlt?: string;
+    imageSrc?: string;
   };
   overview: {
     title: string;
@@ -235,11 +287,57 @@ export type CaseStudyData = {
   moreProjects: MoreProject[];
 };
 
+export type OwnershipIcon =
+  | "product"
+  | "requirements"
+  | "documentation"
+  | "ux"
+  | "logic"
+  | "uat"
+  | "enablement";
+
+export type OwnershipImage = {
+  src: string;
+  alt?: string;
+};
+
+export type OwnershipPersonaData = {
+  title: string;
+  subtitle: string;
+  color: string;
+  responsibilities: string[];
+  permissions: string;
+  goal: string;
+  success: string;
+};
+
+export type OwnershipCardData = {
+  title: string;
+  body: string;
+  icon: OwnershipIcon;
+  /** Multiple images — first shows on the card; click opens a gallery */
+  images?: OwnershipImage[];
+  /** Single image shorthand — use images[] for multiple */
+  imageSrc?: string;
+  imageAlt?: string;
+  /** Use "contain" for document screenshots (BRD, FRD); "cover" for UI previews */
+  imageFit?: "cover" | "contain";
+  personas?: OwnershipPersonaData[];
+};
+
+export type OwnershipSectionData = {
+  title?: string;
+  subtitle?: string;
+  footer?: string;
+  items: OwnershipCardData[];
+};
+
 export type StructuredCaseStudyData = Omit<
   CaseStudyData,
   "impact" | "overview" | "problem" | "uat"
 > & {
   executiveSummary: ExecutiveSummaryData;
+  ownership?: OwnershipSectionData;
   processNav: ProcessNavData;
   designingBeyondSpreadsheets: DesigningBeyondSpreadsheetsData;
   systemArchitecture: SystemArchitectureData;
@@ -248,6 +346,7 @@ export type StructuredCaseStudyData = Omit<
     title: string;
     steps: WalkthroughStep[];
   };
+  solutionWalkthrough?: SolutionWalkthroughData;
   deepDive: {
     id: string;
     title: string;

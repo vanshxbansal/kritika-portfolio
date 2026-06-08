@@ -5,7 +5,13 @@ import type {
   ExecutiveSummaryCardIcon,
   ExecutiveSummaryData,
 } from "@/data/caseStudyTypes";
-import { CaseStudyReveal, caseStudySectionClass } from "./CaseStudyReveal";
+import {
+  CaseStudyCard,
+  CaseStudyReveal,
+  CaseStudySectionHeading,
+  CaseStudySurface,
+  caseStudySectionClass,
+} from "./CaseStudyReveal";
 
 type CaseStudyExecutiveSummaryProps = ExecutiveSummaryData;
 
@@ -39,7 +45,7 @@ function CardIcon({ type, color }: { type: ExecutiveSummaryCardIcon; color: stri
 function SummaryCard({ card, index }: { card: ExecutiveSummaryCard; index: number }) {
   return (
     <CaseStudyReveal delay={index * 0.06} y={28}>
-      <div className="flex h-full flex-col rounded-2xl border border-[#e8edf3] bg-[#fafbfc] p-5 md:p-6">
+      <CaseStudyCard className="flex h-full flex-col p-5 transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(15,23,42,0.07)] md:p-6">
         <div className="mb-4 flex items-center gap-3">
           <span
             className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
@@ -79,29 +85,28 @@ function SummaryCard({ card, index }: { card: ExecutiveSummaryCard; index: numbe
             </li>
           ))}
         </ul>
-      </div>
+      </CaseStudyCard>
     </CaseStudyReveal>
   );
 }
 
 export function CaseStudyExecutiveSummary({
   title,
-  sectionNumber,
   cards,
 }: CaseStudyExecutiveSummaryProps) {
   return (
     <section className={caseStudySectionClass}>
-      <CaseStudyReveal className="mb-8 md:mb-10">
-        <h2 className="font-display text-[26px] font-semibold leading-tight text-[#1e1e2f]">
-          {sectionNumber ? `${sectionNumber}. ${title}` : title}
-        </h2>
-      </CaseStudyReveal>
+      <CaseStudyReveal>
+        <CaseStudySurface>
+          <CaseStudySectionHeading title={title} className="mb-8 md:mb-10" />
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
-        {cards.map((card, index) => (
-          <SummaryCard key={card.title} card={card} index={index} />
-        ))}
-      </div>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
+            {cards.map((card, index) => (
+              <SummaryCard key={card.title} card={card} index={index} />
+            ))}
+          </div>
+        </CaseStudySurface>
+      </CaseStudyReveal>
     </section>
   );
 }

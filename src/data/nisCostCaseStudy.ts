@@ -26,12 +26,10 @@ export const nisCostCaseStudy = {
     cards: [
       {
         title: "Problem",
-        intro: "Spreadsheet-driven planning led to:",
+        intro: "Spreadsheet-driven immunization planning made costing slow, fragmented, and hard to audit.",
         items: [
-          "Manual aggregation of costs",
-          "Complex formula tracking",
-          "Repetitive data entry across sheets",
-          "Limited visibility into funding gaps",
+          "Teams had to manually aggregate costs, maintain complex formulas, and repeat data entry across interdependent sheets.",
+          "Decision-makers had limited real-time visibility into funding gaps and planning trade-offs.",
         ],
         color: "#1976d2",
         icon: "problem" as const,
@@ -49,13 +47,12 @@ export const nisCostCaseStudy = {
         icon: "solution" as const,
       },
       {
-        title: "Outcome",
+        title: "Impact",
         items: [
-          "Reduced spreadsheet dependency",
-          "Improved data consistency & accuracy",
-          "Scalable workflows for countries",
-          "Real-time insights for decisions",
-          "Collaboration across user roles",
+          "Centralized costing, financing, and reporting into one planning platform",
+          "Designed scalable workflows for 5 user roles across country-level planning",
+          "Automated cost and financial calculations to reduce spreadsheet dependency",
+          "Enabled real-time funding gap analysis and reporting for decision-making",
         ],
         color: "#9333ea",
         icon: "outcome" as const,

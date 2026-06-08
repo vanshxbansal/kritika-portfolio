@@ -37,17 +37,25 @@ function NavIcon({ type }: { type: string }) {
   );
 }
 
-export function Navbar() {
+type NavbarProps = {
+  wide?: boolean;
+};
+
+export function Navbar({ wide = false }: NavbarProps) {
+  const navClassName = wide
+    ? "mx-auto flex h-16 w-full items-center justify-between px-5 md:px-10 lg:px-14 xl:px-16"
+    : "mx-auto flex h-16 w-[92%] max-w-6xl items-center justify-between md:w-[85%]";
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-black/5 bg-white/95 shadow-[0_1px_12px_rgba(0,0,0,0.1)] backdrop-blur-sm">
-      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 md:px-[120px]">
+      <nav className={navClassName}>
         <Link
           href="/#spotlight"
           data-cursor-label="Click"
-          className="flex items-center gap-1.5 text-[#666] transition hover:text-[#333]"
+          className="group flex items-center gap-1.5 text-[#666] transition hover:text-[#333]"
         >
           <NavIcon type="star" />
-          <span className="font-display text-[15px] font-medium tracking-[-0.2px]">
+          <span className="font-display text-[15px] font-medium tracking-[-0.2px] underline-offset-8 transition group-hover:text-[#6536eb] group-hover:underline">
             Spotlight
           </span>
         </Link>
@@ -62,7 +70,7 @@ export function Navbar() {
           />
         </Link>
 
-        <div className="flex items-center gap-9">
+        <div className="flex items-center gap-6 sm:gap-9">
           {navLinks.slice(1).map((link) => (
             <Link
               key={link.label}
@@ -75,10 +83,10 @@ export function Navbar() {
                     "data-cursor-badge": "light",
                   }
                 : { "data-cursor-label": "Click" })}
-              className="flex items-center gap-1.5 text-[#666] transition hover:text-[#333]"
+              className="group flex items-center gap-1.5 text-[#666] transition hover:text-[#333]"
             >
               <NavIcon type={link.icon} />
-              <span className="font-display text-[15px] font-medium tracking-[-0.2px]">
+              <span className="font-display text-[15px] font-medium tracking-[-0.2px] underline-offset-8 transition group-hover:text-[#6536eb] group-hover:underline">
                 {link.label}
               </span>
             </Link>

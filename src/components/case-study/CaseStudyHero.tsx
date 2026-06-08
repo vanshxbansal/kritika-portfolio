@@ -15,6 +15,7 @@ type CaseStudyHeroProps = {
   layout?: "centered" | "split";
   eyebrow?: string;
   imageAlt?: string;
+  imageSrc?: string;
 };
 
 function MetaIcon({ type, color }: { type: CaseStudyMetaIcon; color: string }) {
@@ -70,11 +71,12 @@ function MetaCard({
 }) {
   const theme = useCaseStudyTheme();
   const icon = item.icon ?? "monitor";
+  const isWide = item.label === "Team";
 
   return (
     <CaseStudyReveal delay={0.06 + index * 0.04} y={20}>
       <div
-        className="flex min-w-0 flex-1 items-center gap-3 rounded-xl border bg-white px-4 py-3.5"
+        className={`flex min-w-0 items-center gap-3 rounded-xl border bg-white px-4 py-3.5 shadow-[0_10px_28px_rgba(15,23,42,0.04)] ${isWide ? "sm:col-span-2" : ""}`}
         style={{ borderColor: theme.primaryBorder }}
       >
         <span
@@ -85,7 +87,7 @@ function MetaCard({
         </span>
         <div className="min-w-0">
           <p className="font-display text-xs text-[#64748b]">{item.label}</p>
-          <p className="font-display text-sm font-semibold leading-snug text-[#1e1e2f]">
+          <p className="font-display text-[15px] font-semibold leading-snug text-[#1e1e2f]">
             {item.value}
           </p>
         </div>
@@ -101,6 +103,7 @@ function SplitHero({
   meta,
   eyebrow,
   imageAlt,
+  imageSrc,
 }: CaseStudyHeroProps) {
   const theme = useCaseStudyTheme();
   const [titleComplete, setTitleComplete] = useState(false);
@@ -111,7 +114,7 @@ function SplitHero({
       data-cursor-label="You"
       className={`scroll-mt-[180px] w-full self-stretch bg-gradient-to-br from-[#f8fafc] via-white to-[#eef6fd] pb-14 pt-[72px] md:pb-16 md:pt-20 ${caseStudySectionClass}`}
     >
-      <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-12 xl:gap-16">
+      <div className="grid items-center gap-10 lg:grid-cols-[minmax(380px,0.9fr)_minmax(0,1.25fr)] lg:gap-8 xl:grid-cols-[minmax(420px,0.9fr)_minmax(0,1.35fr)] xl:gap-12">
         <div className="flex flex-col gap-6 md:gap-7">
           <CaseStudyReveal y={16}>
             <p
@@ -143,7 +146,7 @@ function SplitHero({
           )}
 
           {titleComplete ? (
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="grid max-w-[760px] grid-cols-1 gap-3 sm:grid-cols-2">
               {meta.map((item, index) => (
                 <MetaCard key={item.label} item={item} index={index} />
               ))}
@@ -151,7 +154,10 @@ function SplitHero({
           ) : null}
         </div>
 
-        <CaseStudyHeroVisual imageAlt={imageAlt ?? "Project preview"} />
+        <CaseStudyHeroVisual
+          imageAlt={imageAlt ?? "Project preview"}
+          imageSrc={imageSrc}
+        />
       </div>
     </section>
   );

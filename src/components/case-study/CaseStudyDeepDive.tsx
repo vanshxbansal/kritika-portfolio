@@ -1,13 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import type { DeepDiveChapter } from "@/data/caseStudyTypes";
 import {
-  CASE_STUDY_CHAPTER_NAV_STICKY_TOP,
   CASE_STUDY_SCROLL_OFFSET,
   CaseStudyBody,
   CaseStudyReveal,
-  CaseStudySectionTitle,
+  CaseStudySectionHeading,
+  CaseStudySurface,
   caseStudySectionClass,
 } from "./CaseStudyReveal";
 import { useCaseStudyTheme } from "./CaseStudyThemeContext";
@@ -22,9 +22,11 @@ type CaseStudyDeepDiveProps = {
 function VisualPlaceholder({
   label,
   caption,
+  imageSrc,
 }: {
   label: string;
   caption?: string;
+  imageSrc?: string;
 }) {
   const theme = useCaseStudyTheme();
 
@@ -33,7 +35,20 @@ function VisualPlaceholder({
       className="overflow-hidden rounded-xl border-2 bg-[#fafafa]"
       style={{ borderColor: theme.primaryBorder }}
     >
-      <div className="flex aspect-[16/10] items-center justify-center p-6">
+      {imageSrc ? (
+        <div className="relative aspect-[16/10] bg-white">
+          <Image
+            src={imageSrc}
+            alt={caption ?? label}
+            fill
+            className="object-cover object-center"
+            sizes="(max-width: 1024px) 100vw, 720px"
+            quality={100}
+            unoptimized
+          />
+        </div>
+      ) : (
+        <div className="flex aspect-[16/10] items-center justify-center p-6">
         <div className="flex flex-col items-center gap-2 text-center">
           <div
             className="flex h-11 w-11 items-center justify-center rounded-xl bg-white shadow-sm"
@@ -58,14 +73,21 @@ function VisualPlaceholder({
             Replace with project screenshots
           </p>
         </div>
-      </div>
+        </div>
+      )}
     </div>
   );
 }
 
 function ChapterVisuals({ visuals }: { visuals: DeepDiveChapter["visuals"] }) {
   if (visuals.length === 1) {
-    return <VisualPlaceholder label={visuals[0].label} caption={visuals[0].caption} />;
+    return (
+      <VisualPlaceholder
+        label={visuals[0].label}
+        caption={visuals[0].caption}
+        imageSrc={visuals[0].imageSrc}
+      />
+    );
   }
 
   return (
@@ -75,6 +97,7 @@ function ChapterVisuals({ visuals }: { visuals: DeepDiveChapter["visuals"] }) {
           key={visual.label}
           label={visual.label}
           caption={visual.caption}
+          imageSrc={visual.imageSrc}
         />
       ))}
     </div>
@@ -110,6 +133,108 @@ function ProblemSolutionBlock({
   );
 }
 
+function ChallengeDecisionField({
+  label,
+  children,
+}: {
+  label: string;
+  children: string;
+}) {
+  const theme = useCaseStudyTheme();
+  const tone =
+    label === "Challenge"
+      ? "#dc2626"
+      : label === "Why it mattered"
+        ? "#9333ea"
+        : label === "Outcome"
+          ? "#16a34a"
+          : theme.primary;
+
+  return (
+    <div className="border-l-2 pl-3" style={{ borderColor: `${tone}66` }}>
+      <p
+        className="mb-1.5 inline-flex rounded-full px-2 py-0.5 font-display text-[11px] font-bold uppercase tracking-[0.08em]"
+        style={{ backgroundColor: `${tone}12`, color: tone }}
+      >
+        {label}
+      </p>
+      <p className="text-base leading-[1.55] tracking-[-0.02em] text-[#1e1e2f]/70">
+        {children}
+      </p>
+    </div>
+  );
+}
+
+function ChallengeDecisionBlock({ chapter }: { chapter: DeepDiveChapter }) {
+  const theme = useCaseStudyTheme();
+
+  if (
+    !chapter.challenge &&
+    !chapter.whyItMattered &&
+    !chapter.decisionIntro &&
+    !chapter.decisionItems &&
+    !chapter.outcome
+  ) {
+    return null;
+  }
+
+  return (
+    <div className="pl-12">
+      <div className="flex flex-col gap-3 rounded-2xl border border-[#e8edf3] bg-[#fafbfc] p-5 md:p-6">
+        {chapter.challenge ? (
+          <ChallengeDecisionField label="Challenge">
+            {chapter.challenge}
+          </ChallengeDecisionField>
+        ) : null}
+
+        {chapter.whyItMattered ? (
+          <ChallengeDecisionField label="Why it mattered">
+            {chapter.whyItMattered}
+          </ChallengeDecisionField>
+        ) : null}
+
+        {chapter.decisionIntro || chapter.decisionItems ? (
+          <div className="border-l-2 pl-3" style={{ borderColor: `${theme.primary}66` }}>
+            <p
+              className="mb-1.5 inline-flex rounded-full px-2 py-0.5 font-display text-[11px] font-bold uppercase tracking-[0.08em]"
+              style={{ backgroundColor: `${theme.primary}12`, color: theme.primary }}
+            >
+              Decision
+            </p>
+            {chapter.decisionIntro ? (
+              <p className="text-base leading-[1.55] tracking-[-0.02em] text-[#1e1e2f]/70">
+                {chapter.decisionIntro}
+              </p>
+            ) : null}
+            {chapter.decisionItems ? (
+              <ul className="mt-1 flex flex-col gap-2">
+                {chapter.decisionItems.map((item) => (
+                  <li
+                    key={item}
+                    className="flex gap-2.5 text-base leading-[1.55] tracking-[-0.02em] text-[#1e1e2f]/70"
+                  >
+                    <span
+                      className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full"
+                      style={{ backgroundColor: theme.primary }}
+                    />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
+        ) : null}
+
+        {chapter.outcome ? (
+          <ChallengeDecisionField label="Outcome">
+            {chapter.outcome}
+          </ChallengeDecisionField>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
 function ChapterContent({
   chapter,
   index,
@@ -133,9 +258,17 @@ function ChapterContent({
         </h3>
       </div>
 
+      {chapter.subtitle ? (
+        <p className="pl-12 font-display text-sm font-semibold text-[#1e1e2f]/45">
+          {chapter.subtitle}
+        </p>
+      ) : null}
+
       {chapter.intro ? (
         <CaseStudyBody className="pl-12">{chapter.intro}</CaseStudyBody>
       ) : null}
+
+      <ChallengeDecisionBlock chapter={chapter} />
 
       {chapter.problem && chapter.solution ? (
         <div className="pl-12">
@@ -195,190 +328,59 @@ function ChapterContent({
   );
 }
 
-function ChapterNavButton({
-  chapter,
-  index,
-  isActive,
-  onClick,
-  compact = false,
-}: {
-  chapter: DeepDiveChapter;
-  index: number;
-  isActive: boolean;
-  onClick: () => void;
-  compact?: boolean;
-}) {
-  const theme = useCaseStudyTheme();
-
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={`group flex items-start gap-3 rounded-lg text-left transition-colors ${
-        compact ? "w-auto shrink-0 px-3 py-2" : "w-full px-3 py-2.5"
-      } ${isActive ? "" : "hover:bg-black/[0.03]"}`}
-      style={
-        isActive
-          ? { backgroundColor: theme.primaryLight }
-          : undefined
-      }
-      aria-current={isActive ? "true" : undefined}
-    >
-      <span
-        className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full font-display text-xs font-semibold"
-        style={
-          isActive
-            ? { backgroundColor: theme.primary, color: "#fff" }
-            : { backgroundColor: `${theme.primary}1A`, color: theme.primary }
-        }
-      >
-        {String(index + 1).padStart(2, "0")}
-      </span>
-      <span
-        className={`font-display leading-snug ${
-          compact ? "whitespace-nowrap text-sm" : "text-sm"
-        } ${isActive ? "font-semibold text-[#1e1e2f]" : "font-medium text-[#1e1e2f]/60 group-hover:text-[#1e1e2f]/80"}`}
-      >
-        {chapter.title}
-      </span>
-    </button>
-  );
-}
-
 export function CaseStudyDeepDive({
   id,
   title,
   subtitle,
   chapters,
 }: CaseStudyDeepDiveProps) {
-  const [activeId, setActiveId] = useState(chapters[0]?.id ?? "");
-  const sectionRef = useRef<HTMLElement>(null);
-  const chapterRefs = useRef<Map<string, HTMLElement>>(new Map());
-  const isScrollingRef = useRef(false);
-
-  const scrollToChapter = useCallback((chapterId: string) => {
-    const el = chapterRefs.current.get(chapterId);
-    if (!el) return;
-
-    isScrollingRef.current = true;
-    setActiveId(chapterId);
-
-    el.scrollIntoView({ behavior: "smooth", block: "start" });
-
-    window.setTimeout(() => {
-      isScrollingRef.current = false;
-    }, 800);
-  }, []);
-
-  useEffect(() => {
-    const observers: IntersectionObserver[] = [];
-
-    chapters.forEach((chapter) => {
-      const el = chapterRefs.current.get(chapter.id);
-      if (!el) return;
-
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (isScrollingRef.current) return;
-          if (entry.isIntersecting) {
-            setActiveId(chapter.id);
-          }
-        },
-        { rootMargin: "-30% 0px -55% 0px", threshold: 0 },
-      );
-
-      observer.observe(el);
-      observers.push(observer);
-    });
-
-    return () => observers.forEach((observer) => observer.disconnect());
-  }, [chapters]);
-
   return (
     <section
       id={id}
-      ref={sectionRef}
       className={caseStudySectionClass}
       style={{ scrollMarginTop: CASE_STUDY_SCROLL_OFFSET }}
     >
-      <CaseStudyReveal className="mb-10 flex flex-col gap-4 md:mb-12">
-        <CaseStudySectionTitle>{title}</CaseStudySectionTitle>
-        {subtitle ? <CaseStudyBody>{subtitle}</CaseStudyBody> : null}
+      <CaseStudyReveal className="mb-8 md:mb-10">
+        <CaseStudySectionHeading title={title} subtitle={subtitle} />
       </CaseStudyReveal>
 
-      {/* Mobile chapter nav — sticky pills */}
-      <div
-        className="sticky z-20 -mx-1 mb-8 bg-white/90 pb-2 pt-1 backdrop-blur-md lg:hidden"
-        style={{ top: CASE_STUDY_CHAPTER_NAV_STICKY_TOP }}
-      >
-        <div className="flex gap-2 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {chapters.map((chapter, index) => (
-            <ChapterNavButton
+      <div className="flex flex-col gap-10 md:gap-12">
+        {chapters.map((chapter, index) => {
+          const reverse = index % 2 === 1;
+
+          return (
+            <div
               key={chapter.id}
-              chapter={chapter}
-              index={index}
-              isActive={activeId === chapter.id}
-              onClick={() => scrollToChapter(chapter.id)}
-              compact
-            />
-          ))}
-        </div>
-      </div>
-
-      <div className="relative flex gap-8 lg:gap-10 xl:gap-12">
-        {/* Desktop sticky sidebar */}
-        <aside className="hidden w-[200px] shrink-0 xl:w-[240px] lg:block">
-          <nav
-            className="sticky flex flex-col gap-1"
-            style={{ top: CASE_STUDY_SCROLL_OFFSET }}
-            aria-label="Product deep dive chapters"
-          >
-            {chapters.map((chapter, index) => (
-              <ChapterNavButton
-                key={chapter.id}
-                chapter={chapter}
-                index={index}
-                isActive={activeId === chapter.id}
-                onClick={() => scrollToChapter(chapter.id)}
-              />
-            ))}
-          </nav>
-        </aside>
-
-        {/* Chapters */}
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-col gap-20 md:gap-28">
-            {chapters.map((chapter, index) => {
-              const reverse = index % 2 === 1;
-
-              return (
-                <CaseStudyReveal key={chapter.id} delay={0.04} y={40}>
-                  <article
-                    id={chapter.id}
-                    ref={(node) => {
-                      if (node) chapterRefs.current.set(chapter.id, node);
-                      else chapterRefs.current.delete(chapter.id);
-                    }}
-                    style={{ scrollMarginTop: CASE_STUDY_SCROLL_OFFSET }}
-                  >
+              className="sticky"
+              style={{
+                top: `calc(${CASE_STUDY_SCROLL_OFFSET}px + ${index * 18}px)`,
+                zIndex: index + 1,
+              }}
+            >
+              <CaseStudyReveal delay={index * 0.04} y={40}>
+                <article
+                  id={chapter.id}
+                  style={{ scrollMarginTop: CASE_STUDY_SCROLL_OFFSET }}
+                >
+                  <CaseStudySurface className="border-[#f1d7c8] bg-white/95 shadow-[0_24px_80px_rgba(20,20,40,0.08)] backdrop-blur">
                     <div
                       className={`flex flex-col gap-8 lg:gap-12 ${
                         reverse ? "lg:flex-row-reverse" : "lg:flex-row"
                       } lg:items-start`}
                     >
-                      <div className="min-w-0 flex-1">
+                      <div className="min-w-0 flex-[1.08]">
                         <ChapterContent chapter={chapter} index={index} />
                       </div>
-                      <div className="min-w-0 flex-[1.15] xl:flex-[1.25]">
+                      <div className="min-w-0 flex-[1.18] lg:pt-[92px]">
                         <ChapterVisuals visuals={chapter.visuals} />
                       </div>
                     </div>
-                  </article>
-                </CaseStudyReveal>
-              );
-            })}
-          </div>
-        </div>
+                  </CaseStudySurface>
+                </article>
+              </CaseStudyReveal>
+            </div>
+          );
+        })}
       </div>
     </section>
   );

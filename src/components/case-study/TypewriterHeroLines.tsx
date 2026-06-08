@@ -34,9 +34,11 @@ export function TypewriterHeroLines({
 
   useEffect(() => {
     if (prefersReducedMotion) {
-      setComplete(true);
-      onComplete?.();
-      return;
+      const timer = window.setTimeout(() => {
+        setComplete(true);
+        onComplete?.();
+      }, 0);
+      return () => window.clearTimeout(timer);
     }
 
     const current = lines[lineIndex];
@@ -71,26 +73,10 @@ export function TypewriterHeroLines({
 
   const alignClass = align === "left" ? "items-start text-left" : "items-center text-center";
 
-  if (prefersReducedMotion) {
-    return (
-      <div className={`flex flex-col ${alignClass}`}>
-        {lines.map((line) => (
-          <h1
-            key={line.text}
-            className={headingClass}
-            style={{ color: line.color === "accent" ? accentColor : defaultColor }}
-          >
-            {line.text}
-          </h1>
-        ))}
-      </div>
-    );
-  }
-
   return (
     <div className={`flex flex-col ${alignClass}`}>
       {lines.map((line, index) => {
-        if (index > lineIndex) return null;
+        if (!complete && index > lineIndex) return null;
 
         const isCurrent = index === lineIndex && !complete;
         const text =
