@@ -1,125 +1,67 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useState } from "react";
-import {
-  motion,
-  useMotionValueEvent,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-  type MotionValue,
-} from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { Moon, Sun } from "lucide-react";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
+import { Reveal } from "@/components/Reveal";
 import { ThemeProvider, useTheme } from "./ThemeContext";
 import { swiggySlides } from "./slides";
 
-const STICKY_TOP_PX = 120;
-const STICKY_TOP = `${STICKY_TOP_PX}px`;
-const SLIDE_VIEWPORT = `calc(100dvh - ${STICKY_TOP_PX}px)`;
+const STICKY_BASE_REM = 7.5;
+const STACK_OFFSET_PX = 20;
 
-function ScrollSlide({
+function StackedSlide({
   index,
   title,
   children,
   onActive,
-  isLast,
 }: {
   index: number;
   title: string;
   children: React.ReactNode;
   onActive: (index: number) => void;
-  isLast: boolean;
 }) {
-  const reduceMotion = useReducedMotion();
-  const runwayRef = useRef<HTMLDivElement>(null);
+  const slideRef = useRef<HTMLDivElement>(null);
 
-  const { scrollYProgress } = useScroll({
-    target: runwayRef,
-    offset: ["start start", "end start"],
-  });
+  useEffect(() => {
+    const node = slideRef.current;
+    if (!node) return;
 
-  const inputRange = isLast
-    ? [0, 0.14, 0.35, 1]
-    : [0, 0.14, 0.32, 0.78, 1];
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.35) {
+          onActive(index);
+        }
+      },
+      { threshold: [0.35, 0.55, 0.75] },
+    );
 
-  const opacityOutput = isLast
-    ? [0, 1, 1, 1]
-    : reduceMotion
-      ? [1, 1, 1, 1, 1]
-      : [0, 1, 1, 1, 0.12];
-
-  const scaleOutput = isLast
-    ? [0.84, 1, 1, 1]
-    : reduceMotion
-      ? [1, 1, 1, 1, 1]
-      : [0.84, 1, 1, 1, 0.93];
-
-  const yOutput = isLast
-    ? [80, 0, 0, 0]
-    : reduceMotion
-      ? [0, 0, 0, 0, 0]
-      : [80, 0, 0, 0, -56];
-
-  const blurOutput = isLast
-    ? [0, 0, 0, 0]
-    : reduceMotion
-      ? [0, 0, 0, 0, 0]
-      : [6, 0, 0, 0, 10];
-
-  const opacity = useTransform(scrollYProgress, inputRange, opacityOutput);
-  const scale = useTransform(scrollYProgress, inputRange, scaleOutput);
-  const y = useTransform(scrollYProgress, inputRange, yOutput);
-  const blur = useTransform(scrollYProgress, inputRange, blurOutput);
-  const filter = useTransform(blur, (value) => `blur(${value}px)`);
-
-  useMotionValueEvent(scrollYProgress, "change", (value) => {
-    const activeUntil = isLast ? 1 : 0.8;
-    if (value >= 0.1 && value <= activeUntil) {
-      onActive(index);
-    }
-  });
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [index, onActive]);
 
   return (
     <div
-      ref={runwayRef}
+      ref={slideRef}
       id={`slide-${index + 1}`}
       aria-label={title}
-      className="relative"
-      style={{ height: isLast ? "108vh" : "135vh" }}
+      className="sticky"
+      style={{
+        top: `calc(${STICKY_BASE_REM}rem + ${index * STACK_OFFSET_PX}px)`,
+        zIndex: index + 1,
+      }}
     >
-      <div
-        className="sticky flex items-center justify-center overflow-hidden px-3 md:px-6"
-        style={{
-          top: STICKY_TOP,
-          height: SLIDE_VIEWPORT,
-          zIndex: index + 2,
-        }}
-      >
-        <motion.div
-          style={{
-            opacity: reduceMotion ? 1 : opacity,
-            scale: reduceMotion ? 1 : scale,
-            y: reduceMotion ? 0 : y,
-            filter: reduceMotion ? "none" : filter,
-            width: "100%",
-            height: "100%",
-            maxWidth: "1400px",
-          }}
-          className="origin-center will-change-transform"
+      <Reveal y={48} scale={0.96} delay={index * 0.04}>
+        <div
+          className="mx-auto w-full max-w-[1400px] overflow-hidden rounded-[24px] shadow-[0_24px_80px_rgba(15,23,42,0.12)] md:rounded-[28px]"
+          style={{ minHeight: "calc(100dvh - 9rem)" }}
         >
-          <motion.div
-            className="h-full w-full overflow-hidden rounded-[20px] md:rounded-[28px]"
-            style={{
-              boxShadow: "0 32px 80px rgba(15, 23, 42, 0.14)",
-            }}
-          >
-            {children}
-          </motion.div>
-        </motion.div>
-      </div>
+          {children}
+        </div>
+      </Reveal>
     </div>
   );
 }
@@ -137,8 +79,8 @@ function PresentationChrome({
   return (
     <>
       <div
-        className="pointer-events-none fixed left-0 right-0 z-40 h-1"
-        style={{ top: STICKY_TOP, background: tokens.progressBg }}
+        className="pointer-events-none fixed left-0 right-0 z-40 h-0.5"
+        style={{ top: `calc(${STICKY_BASE_REM}rem - 1px)`, background: tokens.progressBg }}
         aria-hidden
       >
         <motion.div
@@ -147,7 +89,10 @@ function PresentationChrome({
         />
       </div>
 
-      <div className="fixed right-4 z-40 hidden flex-col items-end gap-2 md:flex" style={{ top: `calc(${STICKY_TOP} + 1rem)` }}>
+      <div
+        className="fixed right-4 z-40 hidden flex-col items-end gap-2 md:flex"
+        style={{ top: `calc(${STICKY_BASE_REM}rem + 1rem)` }}
+      >
         <button
           type="button"
           onClick={toggle}
@@ -226,7 +171,7 @@ function PresentationBody() {
                 Swiggy Delivery Partner — Case Study
               </p>
               <p className="text-xs" style={{ color: tokens.textMuted }}>
-                Scroll — each slide animates in and out
+                Scroll — slides stack like project cards
               </p>
             </div>
           </div>
@@ -242,21 +187,22 @@ function PresentationBody() {
 
       <PresentationChrome activeIndex={activeIndex} deckProgress={deckProgress} />
 
-      <main ref={deckRef}>
+      <main
+        ref={deckRef}
+        className="mx-auto flex w-full max-w-[1500px] flex-col gap-[42px] px-3 pb-[120px] pt-2 md:px-6"
+      >
         {swiggySlides.map((slide, index) => {
           const SlideComponent = slide.component;
-          const isLast = index === swiggySlides.length - 1;
 
           return (
-            <ScrollSlide
+            <StackedSlide
               key={slide.title}
               index={index}
               title={slide.title}
               onActive={setActiveIndex}
-              isLast={isLast}
             >
               <SlideComponent />
-            </ScrollSlide>
+            </StackedSlide>
           );
         })}
       </main>
