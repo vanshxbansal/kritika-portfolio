@@ -1,85 +1,153 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { useRef, useState } from "react";
+import {
+  motion,
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+  type MotionValue,
+} from "framer-motion";
 import { Moon, Sun } from "lucide-react";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 import { ThemeProvider, useTheme } from "./ThemeContext";
 import { swiggySlides } from "./slides";
 
-const SLIDE_EASE = [0.22, 1, 0.36, 1] as const;
+const STICKY_TOP_PX = 120;
+const STICKY_TOP = `${STICKY_TOP_PX}px`;
+const SLIDE_VIEWPORT = `calc(100dvh - ${STICKY_TOP_PX}px)`;
 
 function ScrollSlide({
   index,
   title,
   children,
   onActive,
+  isLast,
 }: {
   index: number;
   title: string;
   children: React.ReactNode;
   onActive: (index: number) => void;
+  isLast: boolean;
 }) {
   const reduceMotion = useReducedMotion();
-  const sectionRef = useRef<HTMLElement>(null);
+  const runwayRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const node = sectionRef.current;
-    if (!node) return;
+  const { scrollYProgress } = useScroll({
+    target: runwayRef,
+    offset: ["start start", "end start"],
+  });
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.45) {
-          onActive(index);
-        }
-      },
-      { threshold: [0.45, 0.6, 0.75] },
-    );
+  const inputRange = isLast
+    ? [0, 0.14, 0.35, 1]
+    : [0, 0.14, 0.32, 0.78, 1];
 
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, [index, onActive]);
+  const opacityOutput = isLast
+    ? [0, 1, 1, 1]
+    : reduceMotion
+      ? [1, 1, 1, 1, 1]
+      : [0, 1, 1, 1, 0.12];
+
+  const scaleOutput = isLast
+    ? [0.84, 1, 1, 1]
+    : reduceMotion
+      ? [1, 1, 1, 1, 1]
+      : [0.84, 1, 1, 1, 0.93];
+
+  const yOutput = isLast
+    ? [80, 0, 0, 0]
+    : reduceMotion
+      ? [0, 0, 0, 0, 0]
+      : [80, 0, 0, 0, -56];
+
+  const blurOutput = isLast
+    ? [0, 0, 0, 0]
+    : reduceMotion
+      ? [0, 0, 0, 0, 0]
+      : [6, 0, 0, 0, 10];
+
+  const opacity = useTransform(scrollYProgress, inputRange, opacityOutput);
+  const scale = useTransform(scrollYProgress, inputRange, scaleOutput);
+  const y = useTransform(scrollYProgress, inputRange, yOutput);
+  const blur = useTransform(scrollYProgress, inputRange, blurOutput);
+  const filter = useTransform(blur, (value) => `blur(${value}px)`);
+
+  useMotionValueEvent(scrollYProgress, "change", (value) => {
+    const activeUntil = isLast ? 1 : 0.8;
+    if (value >= 0.1 && value <= activeUntil) {
+      onActive(index);
+    }
+  });
 
   return (
-    <section
-      ref={sectionRef}
+    <div
+      ref={runwayRef}
       id={`slide-${index + 1}`}
       aria-label={title}
-      className="relative min-h-[calc(100dvh-4rem)] snap-start snap-always scroll-mt-16"
+      className="relative"
+      style={{ height: isLast ? "108vh" : "135vh" }}
     >
-      <motion.div
-        initial={reduceMotion ? false : { opacity: 0, y: 56 }}
-        whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.7, ease: SLIDE_EASE }}
-        className="h-full min-h-[calc(100dvh-4rem)]"
+      <div
+        className="sticky flex items-center justify-center overflow-hidden px-3 md:px-6"
+        style={{
+          top: STICKY_TOP,
+          height: SLIDE_VIEWPORT,
+          zIndex: index + 2,
+        }}
       >
-        {children}
-      </motion.div>
-    </section>
+        <motion.div
+          style={{
+            opacity: reduceMotion ? 1 : opacity,
+            scale: reduceMotion ? 1 : scale,
+            y: reduceMotion ? 0 : y,
+            filter: reduceMotion ? "none" : filter,
+            width: "100%",
+            height: "100%",
+            maxWidth: "1400px",
+          }}
+          className="origin-center will-change-transform"
+        >
+          <motion.div
+            className="h-full w-full overflow-hidden rounded-[20px] md:rounded-[28px]"
+            style={{
+              boxShadow: "0 32px 80px rgba(15, 23, 42, 0.14)",
+            }}
+          >
+            {children}
+          </motion.div>
+        </motion.div>
+      </div>
+    </div>
   );
 }
 
-function PresentationChrome({ activeIndex }: { activeIndex: number }) {
+function PresentationChrome({
+  activeIndex,
+  deckProgress,
+}: {
+  activeIndex: number;
+  deckProgress: MotionValue<number>;
+}) {
   const { tokens, toggle } = useTheme();
-  const progress = ((activeIndex + 1) / swiggySlides.length) * 100;
+  const progressWidth = useTransform(deckProgress, [0, 1], ["0%", "100%"]);
 
   return (
     <>
       <div
-        className="pointer-events-none fixed left-0 right-0 top-16 z-40 h-0.5"
-        style={{ background: tokens.progressBg }}
+        className="pointer-events-none fixed left-0 right-0 z-40 h-1"
+        style={{ top: STICKY_TOP, background: tokens.progressBg }}
         aria-hidden
       >
-        <div
-          className="h-full transition-all duration-500 ease-out"
-          style={{ width: `${progress}%`, background: tokens.orange }}
+        <motion.div
+          className="h-full origin-left"
+          style={{ width: progressWidth, background: tokens.orange }}
         />
       </div>
 
-      <div className="fixed right-4 top-24 z-40 hidden flex-col items-end gap-2 md:flex">
+      <div className="fixed right-4 z-40 hidden flex-col items-end gap-2 md:flex" style={{ top: `calc(${STICKY_TOP} + 1rem)` }}>
         <button
           type="button"
           onClick={toggle}
@@ -93,7 +161,11 @@ function PresentationChrome({ activeIndex }: { activeIndex: number }) {
         >
           {tokens.isDark ? <Sun size={15} /> : <Moon size={15} />}
         </button>
-        <div
+        <motion.div
+          key={activeIndex}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           className="rounded-full px-3 py-1.5 text-xs font-medium shadow-sm"
           style={{
             background: tokens.card,
@@ -104,13 +176,17 @@ function PresentationChrome({ activeIndex }: { activeIndex: number }) {
           <span style={{ color: tokens.orange }}>{String(activeIndex + 1).padStart(2, "0")}</span>
           <span className="mx-1">/</span>
           <span>{String(swiggySlides.length).padStart(2, "0")}</span>
-        </div>
-        <p
+        </motion.div>
+        <motion.p
+          key={`${activeIndex}-title`}
+          initial={{ opacity: 0, x: 12 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
           className="max-w-[140px] text-right text-[11px] leading-snug"
           style={{ color: tokens.textMuted }}
         >
           {swiggySlides[activeIndex]?.title}
-        </p>
+        </motion.p>
       </div>
     </>
   );
@@ -119,6 +195,12 @@ function PresentationChrome({ activeIndex }: { activeIndex: number }) {
 function PresentationBody() {
   const { tokens } = useTheme();
   const [activeIndex, setActiveIndex] = useState(0);
+  const deckRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress: deckProgress } = useScroll({
+    target: deckRef,
+    offset: ["start start", "end end"],
+  });
 
   return (
     <div
@@ -127,7 +209,10 @@ function PresentationBody() {
     >
       <Navbar wide />
 
-      <div className="border-b px-5 py-3 md:px-10" style={{ borderColor: tokens.topBar }}>
+      <div
+        className="sticky z-40 border-b px-5 py-3 md:px-10"
+        style={{ top: "4rem", borderColor: tokens.topBar, background: tokens.bg }}
+      >
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div
@@ -141,7 +226,7 @@ function PresentationBody() {
                 Swiggy Delivery Partner — Case Study
               </p>
               <p className="text-xs" style={{ color: tokens.textMuted }}>
-                Scroll to explore each slide
+                Scroll — each slide animates in and out
               </p>
             </div>
           </div>
@@ -155,17 +240,20 @@ function PresentationBody() {
         </div>
       </div>
 
-      <PresentationChrome activeIndex={activeIndex} />
+      <PresentationChrome activeIndex={activeIndex} deckProgress={deckProgress} />
 
-      <main className="snap-y snap-proximity">
+      <main ref={deckRef}>
         {swiggySlides.map((slide, index) => {
           const SlideComponent = slide.component;
+          const isLast = index === swiggySlides.length - 1;
+
           return (
             <ScrollSlide
               key={slide.title}
               index={index}
               title={slide.title}
               onActive={setActiveIndex}
+              isLast={isLast}
             >
               <SlideComponent />
             </ScrollSlide>
