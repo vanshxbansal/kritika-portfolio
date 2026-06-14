@@ -11,8 +11,10 @@ interface SlideShellProps {
 export function SlideShell({ children, className = "" }: SlideShellProps) {
   const { tokens: t } = useTheme();
   return (
-    <div className={`w-full h-full flex flex-col transition-colors duration-300 ${className}`}
-      style={{ background: t.bg }}>
+    <div
+      className={`flex w-full min-h-[calc(100dvh-8rem)] flex-col transition-colors duration-300 ${className}`}
+      style={{ background: t.bg }}
+    >
       {children}
     </div>
   );

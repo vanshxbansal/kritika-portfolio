@@ -8,7 +8,10 @@ export function Slide1() {
   const { tokens: t } = useTheme();
 
   return (
-    <div className="w-full h-full flex overflow-hidden transition-colors duration-300" style={{ background: t.bg }}>
+    <div
+      className="relative flex min-h-[calc(100dvh-8rem)] w-full transition-colors duration-300"
+      style={{ background: t.bg }}
+    >
       {/* Background grid */}
       <div className="absolute inset-0 opacity-5 pointer-events-none"
         style={{ backgroundImage: `linear-gradient(${t.isDark ? "rgba(252,128,25,0.5)" : "rgba(232,113,10,0.3)"} 1px, transparent 1px), linear-gradient(90deg, ${t.isDark ? "rgba(252,128,25,0.5)" : "rgba(232,113,10,0.3)"} 1px, transparent 1px)`, backgroundSize: "60px 60px" }} />
