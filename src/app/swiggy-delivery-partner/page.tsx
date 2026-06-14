@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import { siteProfile } from "@/data/siteProfile";
-import { SwiggyCaseStudyPage } from "@/components/case-study/SwiggyCaseStudyPage";
+import { SwiggyPresentationPage } from "@/components/swiggy-presentation/SwiggyPresentationPage";
 
 export const metadata: Metadata = {
   title: `Swiggy Delivery Partner Redesign | ${siteProfile.name}`,
   description:
-    "A self-initiated, research-driven product design case study — redesigning the Swiggy Delivery Partner app for financial transparency, smarter order decisions, and task-first information architecture.",
+    "Scroll through a self-initiated product design case study presentation — redesigning the Swiggy Delivery Partner app.",
 };
 
 export default function SwiggyDeliveryPartnerPage() {
-  return <SwiggyCaseStudyPage />;
+  return <SwiggyPresentationPage />;
 }

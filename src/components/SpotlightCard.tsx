@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import type { SpotlightProject } from "@/data/projects";
 import { hpcTheme } from "@/data/hpcTheme";
 import { nisCostTheme } from "@/data/nisCostTheme";
+import { swiggyTheme } from "@/data/swiggyTheme";
 import { Reveal } from "./Reveal";
 
 type SpotlightCardProps = {
@@ -19,6 +20,8 @@ export function SpotlightCard({ project, index }: SpotlightCardProps) {
       ? hpcTheme.primary
       : project.id === "nis-cost"
         ? nisCostTheme.primary
+        : project.id === "swiggy-delivery-partner"
+          ? swiggyTheme.primary
         : project.id === "parakh-portal"
           ? "#6536eb"
           : project.id === "dfa"

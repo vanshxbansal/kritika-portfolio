@@ -117,7 +117,7 @@ export const spotlightProjects: SpotlightProject[] = [
     title: "Swiggy Delivery Partner",
     titleHighlight: "Redesign",
     subtitle:
-      "Research-driven redesign of the driver app — financial transparency, order decisions, and task-first information architecture",
+      "Self-initiated product design presentation — research, prioritization, and UI redesign of the Swiggy Delivery Partner app",
     image: "/swiggy-delivery-partner/hero.png",
     href: "/swiggy-delivery-partner",
     borderColor: "rgba(252, 128, 25, 0.35)",
@@ -129,7 +129,7 @@ export const spotlightProjects: SpotlightProject[] = [
       { label: "Duration", value: "3 Days" },
       { label: "Focus", value: "UX Research · IA · UI" },
     ],
-    cta: "Read Case Study",
+    cta: "View Presentation",
     cursorLabel: "Product Design",
   },
 ];
