@@ -712,6 +712,14 @@ export const hpcCaseStudy = {
   },
   moreProjects: [
     {
+      title: "Swiggy Delivery Partner",
+      subtitle: "Self-initiated Redesign",
+      tag: "Product Design",
+      href: "/swiggy-delivery-partner",
+      cursorLabel: "Product Design",
+      image: "/swiggy-delivery-partner/hero.png",
+    },
+    {
       title: "NIS.Cost",
       subtitle: "Immunization Strategy",
       tag: "Global Health",

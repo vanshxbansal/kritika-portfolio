@@ -358,3 +358,4 @@ export type StructuredCaseStudyData = Omit<
 
 export type NisCostCaseStudyData = StructuredCaseStudyData;
 export type HpcCaseStudyData = StructuredCaseStudyData;
+export type SwiggyCaseStudyData = StructuredCaseStudyData;

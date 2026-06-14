@@ -354,6 +354,14 @@ export const nisCostCaseStudy = {
   },
   moreProjects: [
     {
+      title: "Swiggy Delivery Partner",
+      subtitle: "Self-initiated Redesign",
+      tag: "Product Design",
+      href: "/swiggy-delivery-partner",
+      cursorLabel: "Product Design",
+      image: "/swiggy-delivery-partner/hero.png",
+    },
+    {
       title: "Holistic Progress",
       subtitle: "Card @ PARAKH",
       tag: "EdTech Platform",

@@ -13,16 +13,16 @@ export function CaseStudyHeroVisual({ imageAlt, imageSrc }: CaseStudyHeroVisualP
   const theme = useCaseStudyTheme();
 
   return (
-    <CaseStudyReveal delay={0.12} y={40} className="relative w-full">
+    <CaseStudyReveal delay={0.12} y={40} className="relative min-w-0 w-full overflow-hidden">
       <div
-        className="pointer-events-none absolute -right-8 top-1/2 h-[420px] w-[420px] -translate-y-1/2 rounded-full blur-3xl md:-right-4 lg:h-[480px] lg:w-[480px]"
+        className="pointer-events-none absolute -right-8 top-1/2 h-[320px] w-[320px] -translate-y-1/2 rounded-full blur-3xl md:-right-4 lg:h-[380px] lg:w-[380px]"
         style={{ backgroundColor: `${theme.primary}22` }}
         aria-hidden
       />
 
       {imageSrc ? (
-        <div className="relative mx-auto flex w-full max-w-[760px] items-center justify-center lg:max-w-none lg:justify-end">
-          <div className="w-full max-w-[760px] scale-110 drop-shadow-[0_28px_55px_rgba(15,23,42,0.18)] lg:translate-x-8 lg:origin-right xl:scale-125 xl:translate-x-12">
+        <div className="relative mx-auto flex w-full max-w-[520px] items-center justify-center lg:mx-0 lg:max-w-none lg:justify-end">
+          <div className="w-full max-w-[520px] drop-shadow-[0_20px_45px_rgba(15,23,42,0.14)] lg:max-w-[480px] xl:max-w-[520px]">
             <Image
               src={imageSrc}
               alt={imageAlt}
@@ -30,7 +30,7 @@ export function CaseStudyHeroVisual({ imageAlt, imageSrc }: CaseStudyHeroVisualP
               height={340}
               priority
               unoptimized
-              className="h-auto w-full object-contain"
+              className="h-auto w-full max-h-[280px] object-contain sm:max-h-[300px] lg:max-h-[320px]"
             />
           </div>
         </div>
